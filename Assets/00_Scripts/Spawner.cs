@@ -4,23 +4,19 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    // ½ºÆù Á¶°Ç : ¸ó½ºÅÍ´Â ¿©·¯ ¸¶¸®°¡ Æ¯Á¤ ½Ã°£¸¶´Ù ¼ö½Ã·Î ½ºÆù
+    // ìŠ¤í° ê¸°ëŠ¥ : ëª¬ìŠ¤í„°ë¥¼ íŠ¹ì • ìœ„ì¹˜ì— íŠ¹ì • ì‹œê°„ë§ˆë‹¤ ëœë¤ìœ¼ë¡œ ìƒì„±
 
-    public GameObject monster_Prefab;
+    public GameObject monster_Prefab; // ëª¬ìŠ¤í„° í”„ë¦¬íŒ¹ ì˜¤ë¸Œì íŠ¸
 
-    public int m_Count; // ¸ó½ºÅÍ ¼ıÀÚ
-    public float m_SpawnTime; // ¸î ÃÊ¸¶´Ù ½ºÆùÇÒÁö
+    public int m_Count; // ìƒì„± ê°œìˆ˜
+    public float m_SpawnTime; // ëª‡ ì´ˆë§ˆë‹¤ ìƒì„±í• ì§€
 
     void Start()
     {
         StartCoroutine(SpawnCoroutine());
     }
 
-    void Update()
-    {
-
-    }
-    IEnumerator SpawnCoroutine() // ¸ó½ºÅÍ ½ºÆù¿ë ÄÚ·çÆ¾
+    IEnumerator SpawnCoroutine() // ìŠ¤í° ê´€ë ¨ëœ ì½”ë£¨í‹´
     {
         Vector3 pos;
 
@@ -29,8 +25,7 @@ public class Spawner : MonoBehaviour
             pos = Vector3.zero + Random.insideUnitSphere * 5.0f; 
             pos.y = 0f;
 
-
-            while(Vector3.Distance(pos, Vector3.zero) <= 3.0f) // ³Ê¹« °¡±î¿î °æ¿ì¿¡ ½ºÆù À§Ä¡ ÀçÁ¶Á¤
+            while(Vector3.Distance(pos, Vector3.zero) <= 3.0f) // ë„ˆë¬´ ê°€ê¹Œìš´ ê²½ìš°ì— ë‹¤ì‹œ ìœ„ì¹˜ ì¬ì„¤ì •
             {
                 pos = Vector3.zero + Random.insideUnitSphere * 5.0f;
                 pos.y = 0f;

@@ -14,6 +14,8 @@ public class Monster : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         StartCoroutine(Spawn_Start());
+
+        // í…ŒìŠ¤íŠ¸
     }
 
     private void Update()
@@ -45,9 +47,9 @@ public class Monster : MonoBehaviour
 
         while(percent < 1)
         {
-            current += Time.deltaTime; // 1ÃÊ¸¶´Ù
+            current += Time.deltaTime; // ì‹œê°„ ì¦ê°€
             percent = current / 0.2f;
-                           // ¼±Çüº¸°£ (½ÃÀÛ, ³¡, ½Ã°£) => ½ÃÀÛºÎÅÍ ³¡±îÁö Æ¯Á¤ ½Ã°£ ¼Óµµ·Î ÀÌµ¿
+                           // ì• ë‹ˆë©”ì´ì…˜ ë³€í™˜ (ì‹œì‘, ë, ì‹œê°„) => ì• ë‹ˆë©”ì´ì…˜ ë³€í™˜ ì¤‘ ì¤‘ê°„ ìœ„ì¹˜ ê³„ì‚°
             float LerpPos = Mathf.Lerp(start, end, percent); 
             transform.localScale = new Vector3(LerpPos, LerpPos, LerpPos);
             yield return null;
@@ -57,7 +59,7 @@ public class Monster : MonoBehaviour
         isSpawn = true;
     }
 
-    private void AnimatorChange(string temp) // ¾Ö´Ï¸ŞÀÌÅÍ º¯È¯
+    private void AnimatorChange(string temp) // ì• ë‹ˆë©”ì´ì…˜ ë³€í™˜
     {
         animator.SetBool("isIDLE", false);
         animator.SetBool("isMOVE", false);
