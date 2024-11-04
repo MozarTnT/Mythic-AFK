@@ -430,7 +430,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   monster_Prefab: {fileID: 6452991194577778693, guid: 86dbba3dda76f3c4b928e027e3e85c9f, type: 3}
   m_Count: 5
-  m_SpawnTime: 2
+  m_SpawnTime: 3
+--- !u!1 &1272658853
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1272658855}
+  - component: {fileID: 1272658854}
+  m_Layer: 0
+  m_Name: '##Base_Manager'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1272658854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272658853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce05c43a97f76f8459404d8d4210b072, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1272658855
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1272658853}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1753894306 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6307200986077761465, guid: 38fbc3e855159e9409cf23927e6804a6, type: 3}
@@ -468,6 +512,10 @@ PrefabInstance:
     - target: {fileID: 6307200986077761465, guid: 38fbc3e855159e9409cf23927e6804a6, type: 3}
       propertyPath: m_Name
       value: M_Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307200986077761465, guid: 38fbc3e855159e9409cf23927e6804a6, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6686857319165777155, guid: 38fbc3e855159e9409cf23927e6804a6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -529,3 +577,4 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 1256507088}
   - {fileID: 2084982537}
+  - {fileID: 1272658855}

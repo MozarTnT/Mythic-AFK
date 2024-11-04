@@ -4,5 +4,37 @@ using UnityEngine;
 
 public class Base_Manager : MonoBehaviour
 {
-    
+    public static Base_Manager instance = null; // 싱글톤화
+
+    private static Pool_Manager s_Pool = new Pool_Manager();
+    public static Pool_Manager Pool { get { return s_Pool; } }
+    private void Awake()
+    {
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        if (instance == null)
+        {
+            instance = this;
+            Pool.Initialize(transform);
+
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    public GameObject Instantiate_Path(string path)
+    {
+        return Instantiate(Resources.Load<GameObject>(path));
+    }
+
+
 }
+
+
+

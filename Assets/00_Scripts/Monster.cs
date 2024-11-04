@@ -13,9 +13,12 @@ public class Monster : MonoBehaviour
     private void Start()
     {
         animator = GetComponent<Animator>();
-        StartCoroutine(Spawn_Start());
 
-        // 테스트
+    }
+
+    public void Init()
+    {
+        StartCoroutine(Spawn_Start());
     }
 
     private void Update()
