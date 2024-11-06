@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.UIElements;
 using UnityEngine;
 
@@ -7,10 +8,11 @@ public class Spawner : MonoBehaviour
 {
     // 스폰 기능 : 몬스터를 특정 위치에 특정 시간마다 랜덤으로 생성
 
-    public GameObject monster_Prefab; // 몬스터 프리팹 오브젝트
-
     public int m_Count; // 생성 개수
     public float m_SpawnTime; // 몇 초마다 생성할지
+
+    public static List<Monster> m_Monsters = new List<Monster>();
+    public static List<Player> m_Players = new List<Player>();
 
     void Start()
     {
@@ -37,10 +39,8 @@ public class Spawner : MonoBehaviour
                 value.GetComponent<Monster>().Init();
                 value.transform.position = pos;
                 value.transform.LookAt(Vector3.zero);
+                m_Monsters.Add(value.GetComponent<Monster>());
             });
-
-            StartCoroutine(ReturnCoroutine(goObj));
-
         }
         
         yield return new WaitForSeconds(m_SpawnTime);
@@ -48,12 +48,5 @@ public class Spawner : MonoBehaviour
         StartCoroutine(SpawnCoroutine());
     }
 
-    IEnumerator ReturnCoroutine(GameObject obj)
-    {
-        yield return new WaitForSeconds(3.0f);
 
-        Base_Manager.Pool.m_pool_Dictionary["Monster"].Return(obj);
-
-    }
-  
 }

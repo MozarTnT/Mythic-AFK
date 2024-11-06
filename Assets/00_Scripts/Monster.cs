@@ -2,18 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Monster : MonoBehaviour
+public class Monster : Character
 {
     public float m_Speed;
 
-    Animator animator;
 
     bool isSpawn = false;
 
-    private void Start()
+    protected override void Start()
     {
-        animator = GetComponent<Animator>();
-
+        base.Start();
     }
 
     public void Init()
@@ -62,11 +60,5 @@ public class Monster : MonoBehaviour
         isSpawn = true;
     }
 
-    private void AnimatorChange(string temp) // 애니메이션 변환
-    {
-        animator.SetBool("isIDLE", false);
-        animator.SetBool("isMOVE", false);
-
-        animator.SetBool(temp, true);
-    }
+    
 }

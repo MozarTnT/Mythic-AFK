@@ -1,85 +1,55 @@
 using UnityEngine;
+using System.Linq;
+using System.Collections;
 
-public class Player : MonoBehaviour
+public class Player : Character
 {
-    [Header("Movement Settings")]
-    [SerializeField] private float baseMovementSpeed = 5f;
-    [SerializeField] private float sprintMultiplier = 1.5f;
-    
-    [Header("Status")]
-    private float currentMovementSpeed;
-    private Vector2 moveDirection;
-    private Rigidbody2D rb;
+    Vector3 startPos;
+    Quaternion rot;
 
-    // 아이템 효과 관련 변수들
-    private float speedBoostMultiplier = 1f;
-    private float temporarySpeedBoost = 0f;
-    
-    private void Awake()
+    protected override void Start()
     {
-        // Rigidbody2D 컴포넌트 확인 및 자동 추가
-        rb = GetComponent<Rigidbody2D>();
-        if (rb == null)
-        {
-            rb = gameObject.AddComponent<Rigidbody2D>();
-            rb.gravityScale = 0f;
-            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
-        }
-        InitializeStatus();
-    }
+        base.Start();
 
-    private void InitializeStatus()
-    {
-        currentMovementSpeed = baseMovementSpeed;
+        startPos = transform.position;
+        rot = transform.rotation;
     }
 
     private void Update()
     {
-        // 입력 처리만 담당
-        HandleInput();
-    }
-
-    private void FixedUpdate()
-    {
-        // 실제 물리 이동 처리
-        Move();
-    }
-
-    private void HandleInput()
-    {
-        float horizontalInput = Input.GetAxisRaw("Horizontal"); // A, D 키
-        float verticalInput = Input.GetAxisRaw("Vertical");     // W, S 키
-        
-        moveDirection = new Vector2(horizontalInput, verticalInput).normalized;
-    }
-
-    private void Move()
-    {
-        Vector2 movement = moveDirection * (currentMovementSpeed * speedBoostMultiplier);
-        rb.velocity = movement;
-    }
-
-    // 아이템 효과 관련 메서드들
-    public void ApplySpeedBoost(float multiplier, float duration)
-    {
-        speedBoostMultiplier = multiplier;
-        StartCoroutine(ResetSpeedBoostAfterDelay(duration));
-    }
-
-    private System.Collections.IEnumerator ResetSpeedBoostAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        speedBoostMultiplier = 1f;
-    }
-
-    // 아이템 획득 처리
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.CompareTag("SpeedBoostItem"))
+        if(m_Target == null)
         {
-            // 예시: 속도 부스트 아이템 효과
-            ApplySpeedBoost(1.5f, 5f);
-            Destroy(other.gameObject);
+            FindClosestTarget(Spawner.m_Monsters.ToArray());
+
+            float targetPos = Vector3.Distance(transform.position, startPos);
+            if(targetPos >= 0.1f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, startPos, Time.deltaTime);
+                transform.LookAt(startPos);
+                AnimatorChange("isMOVE");
+            }
+            else
+            {
+                transform.rotation = rot;
+                AnimatorChange("isIDLE");
+            }
+            return;
         }
+
+        float targetDistance = Vector3.Distance(transform.position, m_Target.position);
+        if(targetDistance <= Target_Range && targetDistance > Attack_Range && isAttack == false) // 추적 범위 안에 있지만 공격 범위가 안될때
+        {
+            AnimatorChange("isMOVE");
+            transform.LookAt(m_Target.position);
+            transform.position = Vector3.MoveTowards(transform.position, m_Target.position, Time.deltaTime);
+        }
+        else if(targetDistance <= Attack_Range && isAttack == false) // 공격 범위 안에 있을때
+        {
+            isAttack = true;
+            AnimatorChange("isATTACK");
+            Invoke("InitAttack", 1.0f);
+        }
+
     }
+
 }
