@@ -459,8 +459,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 192f752172cab9d4184b132323a9baa2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Count: 5
-  m_SpawnTime: 3
+  m_Count: 3
+  m_SpawnTime: 5
 --- !u!1 &1272658853
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,6 +541,7 @@ MonoBehaviour:
   HP: 0
   ATK: 0
   ATK_Speed: 0
+  isDead: 0
   m_BulletTransform: {fileID: 74381893}
 --- !u!1 &428117294711309715
 GameObject:

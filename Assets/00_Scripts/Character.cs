@@ -10,14 +10,14 @@ public class Character : MonoBehaviour
     public double ATK;
     public float ATK_Speed;
 
-    protected float Attack_Range = 1.0f;
-    protected float Target_Range = 3.0f;
+    public bool isDead = false;
+
+    protected float Attack_Range = 3.0f;
+    protected float Target_Range = 5.0f;
     protected bool isAttack = false;
     protected Transform m_Target;
 
     [SerializeField] private Transform m_BulletTransform;
-
-
 
 
     protected virtual void Start()
@@ -43,10 +43,13 @@ public class Character : MonoBehaviour
 
     protected virtual void Bullet()
     {
+        if(m_Target == null) return;
+        
         Base_Manager.Pool.Pooling_OBJ("Bullet").Get(value =>
         {
             value.transform.position = m_BulletTransform.position;
             value.transform.LookAt(m_Target);
+            value.GetComponent<Bullet>().Init(m_Target, 10, "CH_01");
         });
     }
 

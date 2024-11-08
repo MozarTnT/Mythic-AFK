@@ -17,6 +17,8 @@ public class Player : Character
 
     private void Update()
     {
+        FindClosestTarget(Spawner.m_Monsters.ToArray());
+
         // 타겟이 없을 경우 가장 가까운 타겟을 찾음
         if(m_Target == null)
         {
@@ -40,6 +42,10 @@ public class Player : Character
             
             return;
         }
+
+        if(m_Target.GetComponent<Character>().isDead) FindClosestTarget(Spawner.m_Monsters.ToArray());
+        
+
 
         // 타겟과의 거리 계산
         float targetDistance = Vector3.Distance(transform.position, m_Target.position);

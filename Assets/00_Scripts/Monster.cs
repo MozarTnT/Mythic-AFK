@@ -1,21 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Monster : Character
 {
     public float m_Speed;
-
-
     bool isSpawn = false;
+
+
 
     protected override void Start()
     {
         base.Start();
+        HP = 5;
     }
 
     public void Init()
     {
+        isDead = false;
+        HP = 5;
         StartCoroutine(Spawn_Start());
     }
 
@@ -60,5 +64,25 @@ public class Monster : Character
         isSpawn = true;
     }
 
-    
+    public void GetDamage(double dmg)
+    {
+        if(isDead) return;
+
+        HP -= dmg;
+
+        if(HP <= 0)
+        {
+            isDead = true;
+            Spawner.m_Monsters.Remove(this);
+
+            var smokeObj = Base_Manager.Pool.Pooling_OBJ("Smoke").Get((value) =>
+            {
+                value.transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
+                Base_Manager.instance.Return_Pool(value.GetComponent<ParticleSystem>().main.duration, value, "Smoke");
+            });
+
+            Base_Manager.Pool.m_pool_Dictionary["Monster"].Return(this.gameObject);
+        }
+    }
+
 }
