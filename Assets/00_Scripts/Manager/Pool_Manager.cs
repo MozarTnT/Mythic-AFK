@@ -37,6 +37,8 @@ public class Object_Pool : IPool // 오브젝트 풀링 클래스
     {
         pool.Enqueue(obj);
         obj.transform.parent = parentTransform;
+        //obj.transform.SetParent(parentTransform, false);
+
         obj.SetActive(false);
 
         if(action != null)

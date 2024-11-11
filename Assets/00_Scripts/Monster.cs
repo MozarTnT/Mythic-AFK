@@ -68,6 +68,11 @@ public class Monster : Character
     {
         if(isDead) return;
 
+        Base_Manager.Pool.Pooling_OBJ("HIT_TEXT").Get((value) =>
+        {
+            value.GetComponent<HIT_TEXT>().Init(transform.position, dmg, false);
+        });
+
         HP -= dmg;
 
         if(HP <= 0)
