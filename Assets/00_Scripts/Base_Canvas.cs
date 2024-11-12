@@ -20,4 +20,12 @@ public class Base_Canvas : MonoBehaviour
         }
     }
    
+    public Transform COIN;
+    [SerializeField] private Transform LAYER;
+
+    public Transform HOLDER_LAYER(int value)
+    {
+        return LAYER.GetChild(value);
+    }
+
 }

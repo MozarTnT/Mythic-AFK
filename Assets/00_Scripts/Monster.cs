@@ -80,10 +80,15 @@ public class Monster : Character
             isDead = true;
             Spawner.m_Monsters.Remove(this);
 
-            var smokeObj = Base_Manager.Pool.Pooling_OBJ("Smoke").Get((value) =>
+            Base_Manager.Pool.Pooling_OBJ("Smoke").Get((value) =>
             {
                 value.transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
                 Base_Manager.instance.Return_Pool(value.GetComponent<ParticleSystem>().main.duration, value, "Smoke");
+            });
+
+            Base_Manager.Pool.Pooling_OBJ("COIN_PARENT").Get((value) =>
+            {
+                value.GetComponent<COIN_PARENT>().Init(transform.position);
             });
 
             Base_Manager.Pool.m_pool_Dictionary["Monster"].Return(this.gameObject);
