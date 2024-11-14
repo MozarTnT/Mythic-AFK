@@ -91,6 +91,15 @@ public class Monster : Character
                 value.GetComponent<COIN_PARENT>().Init(transform.position);
             });
 
+
+            for(int i = 0; i < 3; i++) // 아이템 테스트용
+            {
+                Base_Manager.Pool.Pooling_OBJ("Item_OBJ").Get((value) =>
+                {
+                    value.GetComponent<Item_OBJ>().Init(transform.position);
+                });
+            }
+
             Base_Manager.Pool.m_pool_Dictionary["Monster"].Return(this.gameObject);
         }
     }
