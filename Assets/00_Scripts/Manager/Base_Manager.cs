@@ -7,7 +7,10 @@ public class Base_Manager : MonoBehaviour
     public static Base_Manager instance = null; // 싱글톤화
 
     private static Pool_Manager s_Pool = new Pool_Manager();
+    public static Player_Manager s_Player = new Player_Manager();
     public static Pool_Manager Pool { get { return s_Pool; } }
+    public static Player_Manager Player { get { return s_Player; } }
+
     private void Awake()
     {
         Initialize();
