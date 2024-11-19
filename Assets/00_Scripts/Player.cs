@@ -4,6 +4,8 @@ using System.Collections;
 
 public class Player : Character
 {
+    private Character_Scriptable CH_Data;
+    public string CH_Name;
     Vector3 startPos;
     Quaternion rot;
 
@@ -11,8 +13,18 @@ public class Player : Character
     {
         base.Start();
 
+        Data_Set(Resources.Load<Character_Scriptable>("Scriptable/" + CH_Name));
+
+        Spawner.m_Players.Add(this);
+
         startPos = transform.position;
         rot = transform.rotation;
+    }
+
+    private void Data_Set(Character_Scriptable data)
+    {
+        CH_Data = data;
+        Attack_Range = data.m_Attack_Range;
     }
 
     private void Update()
@@ -45,8 +57,6 @@ public class Player : Character
 
         if(m_Target.GetComponent<Character>().isDead) FindClosestTarget(Spawner.m_Monsters.ToArray());
         
-
-
         // 타겟과의 거리 계산
         float targetDistance = Vector3.Distance(transform.position, m_Target.position);
         if(targetDistance <= Target_Range && targetDistance > Attack_Range && isAttack == false)
@@ -63,6 +73,18 @@ public class Player : Character
             AnimatorChange("isATTACK");
             Invoke("InitAttack", 1.0f);
         }
+    }
+
+    public override void GetDamage(double dmg)
+    {
+        base.GetDamage(dmg);
+
+        var goObj = Base_Manager.Pool.Pooling_OBJ("HIT_TEXT").Get((value) =>
+        {
+            value.GetComponent<HIT_TEXT>().Init(transform.position, dmg, true);
+        });
+
+        HP -= dmg;
     }
 
 }

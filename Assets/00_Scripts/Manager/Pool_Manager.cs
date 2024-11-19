@@ -90,7 +90,7 @@ public class Pool_Manager // 오브젝트 풀링 매니저 클래스
 
     private void Add_Queue(string path) // 오브젝트 풀링 큐에 추가 (다 쓴 오브젝트 Queue로 이동)
     {
-        var go = Base_Manager.instance.Instantiate_Path(path);
+        var go = Base_Manager.instance.Instantiate_Path("Pool_OBJ/" + path);
         go.transform.parent = m_pool_Dictionary[path].parentTransform;
 
         m_pool_Dictionary[path].Return(go);

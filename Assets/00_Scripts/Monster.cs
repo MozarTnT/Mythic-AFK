@@ -13,34 +13,42 @@ public class Monster : Character
     protected override void Start()
     {
         base.Start();
-        HP = 5;
+        HP = 500;
     }
 
     public void Init()
     {
         isDead = false;
-        HP = 5;
+        HP = 500;
+        Attack_Range = 0.5f;
         StartCoroutine(Spawn_Start());
     }
 
     private void Update()
     {
-        transform.LookAt(Vector3.zero);
+        if (isSpawn == false) return;
 
-        if (isSpawn == false)
-            return;
+        FindClosestTarget(Spawner.m_Players.ToArray());
 
-
-        float targetDistance = Vector3.Distance(transform.position, Vector3.zero);
-        if(targetDistance <= 0.5f)
+        if(m_Target.GetComponent<Character>().isDead) FindClosestTarget(Spawner.m_Players.ToArray());
+        
+        // 타겟과의 거리 계산
+        float targetDistance = Vector3.Distance(transform.position, m_Target.position);
+        if(targetDistance > Attack_Range && isAttack == false)
         {
-            AnimatorChange("isIDLE");
-        }
-        else
-        {
-            transform.position = Vector3.MoveTowards(transform.position, Vector3.zero, Time.deltaTime * m_Speed);
+            // 추적 범위 내에 있을 때 이동
             AnimatorChange("isMOVE");
+            transform.LookAt(m_Target.position);
+            transform.position = Vector3.MoveTowards(transform.position, m_Target.position, Time.deltaTime);
         }
+        else if(targetDistance <= Attack_Range && isAttack == false)
+        {
+            // 공격 범위 내에 있을 때 공격
+            isAttack = true;
+            AnimatorChange("isATTACK");
+            Invoke("InitAttack", 1.0f);
+        }
+      
     }
 
     IEnumerator Spawn_Start()
@@ -64,7 +72,7 @@ public class Monster : Character
         isSpawn = true;
     }
 
-    public void GetDamage(double dmg)
+    public override void GetDamage(double dmg)
     {
         if(isDead) return;
 

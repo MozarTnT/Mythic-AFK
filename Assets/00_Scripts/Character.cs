@@ -45,7 +45,7 @@ public class Character : MonoBehaviour
     {
         if(m_Target == null) return;
         
-        Base_Manager.Pool.Pooling_OBJ("Bullet").Get(value =>
+        Base_Manager.Pool.Pooling_OBJ("Attack_Helper").Get((value) =>
         {
             value.transform.position = m_BulletTransform.position;
             value.transform.LookAt(m_Target);
@@ -53,6 +53,25 @@ public class Character : MonoBehaviour
         });
     }
 
+    protected virtual void Attack()
+    {
+        if(m_Target == null) return;
+
+        Base_Manager.Pool.Pooling_OBJ("Attack_Helper").Get((value) =>
+        {
+            value.transform.position = m_Target.position;
+            value.GetComponent<Bullet>().Attack_Init(m_Target, 10);
+
+
+        });
+
+
+    }
+
+    public virtual void GetDamage(double dmg)
+    {
+        
+    }
 
 
     protected void FindClosestTarget<T>(T[] targets) where T : Component
