@@ -41,6 +41,8 @@ public class Character : MonoBehaviour
         animator.SetBool(temp, true);
     }
 
+  
+
     protected virtual void Bullet()
     {
         if(m_Target == null) return;
@@ -49,7 +51,7 @@ public class Character : MonoBehaviour
         {
             value.transform.position = m_BulletTransform.position;
             value.transform.LookAt(m_Target);
-            value.GetComponent<Bullet>().Init(m_Target, 10, "CH_01");
+            value.GetComponent<Bullet>().Init(m_Target, ATK, "CH_01");
         });
     }
 
@@ -60,9 +62,7 @@ public class Character : MonoBehaviour
         Base_Manager.Pool.Pooling_OBJ("Attack_Helper").Get((value) =>
         {
             value.transform.position = m_Target.position;
-            value.GetComponent<Bullet>().Attack_Init(m_Target, 10);
-
-
+            value.GetComponent<Bullet>().Attack_Init(m_Target, ATK);
         });
 
 

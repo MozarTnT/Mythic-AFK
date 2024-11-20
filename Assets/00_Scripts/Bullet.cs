@@ -75,7 +75,7 @@ public class Bullet : MonoBehaviour
             {
                 GetHit = true;
 
-                m_Target.GetComponent<Character>().GetDamage(10);
+                m_Target.GetComponent<Character>().GetDamage(m_DMG);
 
                 m_Projectiles[m_CharacterName].gameObject.SetActive(false);
                 m_Muzzles[m_CharacterName].Play();

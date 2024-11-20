@@ -5,6 +5,7 @@ using System.Collections;
 public class Player : Character
 {
     private Character_Scriptable CH_Data;
+    public GameObject TrailObject;
     public string CH_Name;
     Vector3 startPos;
     Quaternion rot;
@@ -25,6 +26,14 @@ public class Player : Character
     {
         CH_Data = data;
         Attack_Range = data.m_Attack_Range;
+
+        Set_ATKHP();
+    }
+
+    public void Set_ATKHP()
+    {
+        ATK = Base_Manager.Player.Get_ATK(CH_Data.m_Rarity);
+        HP = Base_Manager.Player.Get_HP(CH_Data.m_Rarity);
     }
 
     private void Update()
@@ -75,6 +84,8 @@ public class Player : Character
         }
     }
 
+    
+
     public override void GetDamage(double dmg)
     {
         base.GetDamage(dmg);
@@ -86,5 +97,15 @@ public class Player : Character
 
         HP -= dmg;
     }
+
+    protected override void Attack()
+    {
+        base.Attack();
+        TrailObject.SetActive(true);
+
+        Invoke("TrailDisable", 1.0f);
+    }
+
+    private void TrailDisable() => TrailObject.SetActive(false);
 
 }

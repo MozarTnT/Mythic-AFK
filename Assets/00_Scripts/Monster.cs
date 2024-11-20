@@ -13,14 +13,16 @@ public class Monster : Character
     protected override void Start()
     {
         base.Start();
-        HP = 500;
+        HP = 20;
     }
 
     public void Init()
     {
         isDead = false;
-        HP = 500;
+        ATK = 10;
+        HP = 20;
         Attack_Range = 0.5f;
+        Target_Range = Mathf.Infinity;
         StartCoroutine(Spawn_Start());
     }
 
@@ -28,25 +30,26 @@ public class Monster : Character
     {
         if (isSpawn == false) return;
 
-        FindClosestTarget(Spawner.m_Players.ToArray());
+        if(m_Target == null) FindClosestTarget(Spawner.m_Players.ToArray());
 
-        if(m_Target.GetComponent<Character>().isDead) FindClosestTarget(Spawner.m_Players.ToArray());
-        
         // 타겟과의 거리 계산
-        float targetDistance = Vector3.Distance(transform.position, m_Target.position);
-        if(targetDistance > Attack_Range && isAttack == false)
+        if(m_Target != null)
         {
-            // 추적 범위 내에 있을 때 이동
-            AnimatorChange("isMOVE");
-            transform.LookAt(m_Target.position);
-            transform.position = Vector3.MoveTowards(transform.position, m_Target.position, Time.deltaTime);
-        }
-        else if(targetDistance <= Attack_Range && isAttack == false)
-        {
-            // 공격 범위 내에 있을 때 공격
-            isAttack = true;
-            AnimatorChange("isATTACK");
-            Invoke("InitAttack", 1.0f);
+            float targetDistance = Vector3.Distance(transform.position, m_Target.position);
+            if(targetDistance > Attack_Range && isAttack == false)
+            {
+                // 추적 범위 내에 있을 때 이동
+                AnimatorChange("isMOVE");
+                transform.LookAt(m_Target.position);
+                transform.position = Vector3.MoveTowards(transform.position, m_Target.position, Time.deltaTime);
+            }
+            else if(targetDistance <= Attack_Range && isAttack == false)
+            {
+                // 공격 범위 내에 있을 때 공격
+                isAttack = true;
+                AnimatorChange("isATTACK");
+                Invoke("InitAttack", 1.0f);
+            }
         }
       
     }
@@ -76,9 +79,11 @@ public class Monster : Character
     {
         if(isDead) return;
 
+        bool critical = Critical(ref dmg);
+
         Base_Manager.Pool.Pooling_OBJ("HIT_TEXT").Get((value) =>
         {
-            value.GetComponent<HIT_TEXT>().Init(transform.position, dmg, false);
+            value.GetComponent<HIT_TEXT>().Init(transform.position, dmg, false, critical);
         });
 
         HP -= dmg;
@@ -110,6 +115,19 @@ public class Monster : Character
 
             Base_Manager.Pool.m_pool_Dictionary["Monster"].Return(this.gameObject);
         }
+    }
+
+    private bool Critical(ref double dmg)
+    {
+        float RandomValue = Random.Range(0, 100.0f);
+
+        if(RandomValue <= Base_Manager.Player.Critical_Percentage)
+        {
+            dmg *= (Base_Manager.Player.Critical_Damage / 100);
+            return true;
+        }
+        return false;
+        
     }
 
 }
