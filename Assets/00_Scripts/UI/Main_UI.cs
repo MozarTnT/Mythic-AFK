@@ -1,13 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Main_UI : MonoBehaviour
 {
     public static Main_UI instance = null;
-    [SerializeField] private TextMeshProUGUI m_Level_Text;
-    [SerializeField] private TextMeshProUGUI m_ALLATK_Text;
+
 
     private void Awake()
     {
@@ -25,6 +26,63 @@ public class Main_UI : MonoBehaviour
     {
         TextCheck();
     }
+
+  
+
+
+    [SerializeField] private TextMeshProUGUI m_Level_Text;
+    [SerializeField] private TextMeshProUGUI m_ALLATK_Text;
+
+    [SerializeField] private Image m_Fade;
+    [SerializeField] private float m_FadeDuration;
+
+
+
+    public void FadeInOut(bool FadeInOut, bool Sibling = false, Action action = null)
+    {
+        if(!Sibling) // FadeInOut을 전체 적용 및 UI 일부 적용에 따라 나눔
+        {
+            m_Fade.transform.parent = this.transform;
+            m_Fade.transform.SetSiblingIndex(0);
+        }
+        else
+        {
+            m_Fade.transform.parent = Base_Canvas.instance.transform;
+            m_Fade.transform.SetAsLastSibling();
+        }
+
+        StartCoroutine(FadeInOut_Coroutine(FadeInOut, action));
+    }
+
+    IEnumerator FadeInOut_Coroutine(bool FadeInOut, Action action = null)
+    {
+        if(FadeInOut == false)
+        {
+            m_Fade.raycastTarget = true;
+        }
+
+        float current = 0f;
+        float percent = 0f;
+        float start = FadeInOut ? 1.0f : 0f;
+        float end = FadeInOut ? 0f : 1.0f;
+
+        while(percent < 1.0f)
+        {
+            current += Time.deltaTime;
+            percent = current / m_FadeDuration;
+
+            float LerpPos = Mathf.Lerp(start, end, percent);
+            m_Fade.color = new Color(0f, 0f, 0f, LerpPos);
+
+            yield return null;
+        }
+   
+        if(action != null) action?.Invoke();
+
+        m_Fade.raycastTarget = false;
+    }
+
+
 
     public void TextCheck()
     {

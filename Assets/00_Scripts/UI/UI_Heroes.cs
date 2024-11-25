@@ -12,8 +12,10 @@ public class UI_Heroes : UI_Base
     // 캐릭터 데이터 저장을 위한 딕셔너리
     Dictionary<string, Character_Scriptable> m_Dictionries = new Dictionary<string, Character_Scriptable>();
 
-    void Start()
+    public override bool Init()
     {
+        Main_UI.instance.FadeInOut(true, true, null);
+
         // Resources 폴더에서 모든 캐릭터 데이터 로드
         var Data = Resources.LoadAll<Character_Scriptable>("Scriptable");
         
@@ -32,5 +34,18 @@ public class UI_Heroes : UI_Base
             var go = Instantiate(Part, Content).GetComponent<UI_Heroes_Part>();
             go.Initialize(data.Value); 
         }
+
+        return base.Init();
     }
+
+    public override void DisableOBJ()
+    {
+        Main_UI.instance.FadeInOut(false, true, () =>
+        {
+            Main_UI.instance.FadeInOut(true, false, null);
+            base.DisableOBJ();
+        });
+    }
+
+
 }

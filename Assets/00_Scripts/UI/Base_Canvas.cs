@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Base_Canvas : MonoBehaviour
 {
@@ -19,13 +20,50 @@ public class Base_Canvas : MonoBehaviour
             Destroy(this.gameObject); // 이미 존재하는 인스턴스가 있으면 현재 오브젝트 파괴
         }
     }
+
+    private void Start()
+    {
+        HERO_BUTTON.onClick.AddListener(() => GetUI("#Heros", true));
+    }
    
     public Transform COIN; // 코인 오브젝트
     [SerializeField] private Transform LAYER; // 레이어 설정
+    [SerializeField] private Button HERO_BUTTON;
+
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(Utils.UI_Holder.Count > 0)
+                Utils.ClosePopupUI();
+            else
+            {
+                Debug.Log("게임 종료");
+            }
+        }
+    }
+
 
     // 주어진 인덱스에 해당하는 LAYER의 자식 Transform 반환
     public Transform HOLDER_LAYER(int value)
     {
         return LAYER.GetChild(value);
+    }
+
+    public void GetUI(string temp, bool Fade = false)
+    {
+        if(Fade)
+        {
+            Main_UI.instance.FadeInOut(false, true,() => GetPopupUI(temp));
+            return;
+        }
+        GetPopupUI(temp);
+    }
+
+    void GetPopupUI(string temp)
+    {
+        var go = Instantiate(Resources.Load<UI_Base>("UI/" + temp), transform);
+        Utils.UI_Holder.Push(go);
     }
 }
