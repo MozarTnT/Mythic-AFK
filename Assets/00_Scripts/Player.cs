@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Linq;
 using System.Collections;
+using UnityEditor.SceneManagement;
 
 public class Player : Character
 {
@@ -17,6 +18,7 @@ public class Player : Character
         Data_Set(Resources.Load<Character_Scriptable>("Scriptable/" + CH_Name));
 
         Spawner.m_Players.Add(this);
+        Stage_Manager.m_ReadyEvent += OnReady;
 
         startPos = transform.position;
         rot = transform.rotation;
@@ -36,15 +38,22 @@ public class Player : Character
         HP = Base_Manager.Player.Get_HP(CH_Data.m_Rarity);
     }
 
+
+    private void OnReady()
+    {
+        transform.position = startPos;
+    }
     private void Update()
     {
+        //FindClosestTarget(Spawner.m_Monsters.Select(m => m.transform).ToArray());
+
+        if(Stage_Manager.m_State != Stage_State.Play) return;
+
         FindClosestTarget(Spawner.m_Monsters.ToArray());
 
         // 타겟이 없을 경우 가장 가까운 타겟을 찾음
         if(m_Target == null)
-        {
-            FindClosestTarget(Spawner.m_Monsters.Select(m => m.transform).ToArray());
-
+        {      
             // 시작 위치로 돌아가는 로직
             float targetPos = Vector3.Distance(transform.position, startPos);
             if(targetPos >= 0.1f)
@@ -60,28 +69,36 @@ public class Player : Character
                 transform.rotation = rot;
                 AnimatorChange("isIDLE");
             }
-            
-            return;
+        }
+        else
+        {
+            if(m_Target.GetComponent<Character>().isDead)
+            {
+                FindClosestTarget(Spawner.m_Monsters.ToArray());
+            } 
+         
+            // 타겟과의 거리 계산
+            float targetDistance = Vector3.Distance(transform.position, m_Target.position);
+            if(targetDistance <= Target_Range && targetDistance > Attack_Range && isAttack == false)
+            {
+                // 추적 범위 내에 있을 때 이동
+                AnimatorChange("isMOVE");
+                transform.LookAt(m_Target.position);
+                transform.position = Vector3.MoveTowards(transform.position, m_Target.position, Time.deltaTime);
+            }
+            else if(targetDistance <= Attack_Range && isAttack == false)
+            {
+                // 공격 범위 내에 있을 때 공격
+                isAttack = true;
+                AnimatorChange("isATTACK");
+                Invoke("InitAttack", 1.0f);
+            }
         }
 
-        if(m_Target.GetComponent<Character>().isDead) FindClosestTarget(Spawner.m_Monsters.ToArray());
+
+   
         
-        // 타겟과의 거리 계산
-        float targetDistance = Vector3.Distance(transform.position, m_Target.position);
-        if(targetDistance <= Target_Range && targetDistance > Attack_Range && isAttack == false)
-        {
-            // 추적 범위 내에 있을 때 이동
-            AnimatorChange("isMOVE");
-            transform.LookAt(m_Target.position);
-            transform.position = Vector3.MoveTowards(transform.position, m_Target.position, Time.deltaTime);
-        }
-        else if(targetDistance <= Attack_Range && isAttack == false)
-        {
-            // 공격 범위 내에 있을 때 공격
-            isAttack = true;
-            AnimatorChange("isATTACK");
-            Invoke("InitAttack", 1.0f);
-        }
+       
     }
 
     

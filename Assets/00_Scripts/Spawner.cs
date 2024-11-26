@@ -14,10 +14,19 @@ public class Spawner : MonoBehaviour
     public static List<Monster> m_Monsters = new List<Monster>();
     public static List<Player> m_Players = new List<Player>();
 
-    void Start()
+    Coroutine coroutine;
+
+    private void Start()
     {
-        StartCoroutine(SpawnCoroutine());
+        Stage_Manager.m_PlayEvent += Initialize;
     }
+
+    public void Initialize()
+    {
+        coroutine = StartCoroutine(SpawnCoroutine());
+    }
+
+
 
     IEnumerator SpawnCoroutine() // 스폰 관련된 코루틴
     {

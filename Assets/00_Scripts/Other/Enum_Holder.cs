@@ -6,3 +6,12 @@ public enum Rarity
     Hero, // 3
     Legendary // 4
 }
+
+public enum Stage_State
+{
+    Ready,
+    Play,
+    Boss,
+    Clear,
+    Dead
+}
