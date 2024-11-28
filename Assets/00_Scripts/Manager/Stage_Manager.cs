@@ -13,6 +13,8 @@ public delegate void OnDeadEvent();
 public class Stage_Manager 
 {
     public static Stage_State m_State;
+    public static int MaxCount = 5;
+    public static int Count;
 
     public static OnReadyEvent m_ReadyEvent; // 델리게이트 체인 : 하나의 델리게이트가 여러 함수를 참조 가능함
     public static OnPlayEvent m_PlayEvent;

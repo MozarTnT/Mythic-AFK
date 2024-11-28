@@ -26,9 +26,9 @@ public class Base_Manager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            Pool.Initialize(transform);
-            Stage_Manager.State_Change(Stage_State.Ready);
 
+            Pool.Initialize(transform);
+            StartCoroutine(Action_Coroutine(() => Stage_Manager.State_Change(Stage_State.Ready), 0.3f));
             DontDestroyOnLoad(this.gameObject);
         }
         else

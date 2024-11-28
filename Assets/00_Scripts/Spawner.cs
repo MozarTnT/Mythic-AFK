@@ -18,12 +18,26 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
-        Stage_Manager.m_PlayEvent += Initialize;
+        Stage_Manager.m_PlayEvent += OnPlay;
+        Stage_Manager.m_BossEvent += OnBoss;
     }
 
-    public void Initialize()
+    public void OnPlay()
     {
         coroutine = StartCoroutine(SpawnCoroutine());
+    }
+
+    public void OnBoss()
+    {
+        if(coroutine != null)
+        {
+            StopCoroutine(coroutine);
+        }
+        for(int i = 0; i < m_Monsters.Count; i++)
+        {
+            Base_Manager.Pool.m_pool_Dictionary["Monster"].Return(m_Monsters[i].gameObject);
+        }
+        m_Monsters.Clear();
     }
 
 
@@ -54,7 +68,7 @@ public class Spawner : MonoBehaviour
         
         yield return new WaitForSeconds(m_SpawnTime);
 
-        StartCoroutine(SpawnCoroutine());
+        coroutine = StartCoroutine(SpawnCoroutine());
     }
 
 

@@ -91,30 +91,38 @@ public class Monster : Character
         if(HP <= 0)
         {
             isDead = true;
-            Spawner.m_Monsters.Remove(this);
+            Dead_Event();
+        }
+    }
 
-            Base_Manager.Pool.Pooling_OBJ("Smoke").Get((value) =>
-            {
-                value.transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
-                Base_Manager.instance.Return_Pool(value.GetComponent<ParticleSystem>().main.duration, value, "Smoke");
-            });
+    private void Dead_Event()
+    {
+        Stage_Manager.Count++;
+        Main_UI.instance.Monster_Slider_Count();
 
-            Base_Manager.Pool.Pooling_OBJ("COIN_PARENT").Get((value) =>
-            {
-                value.GetComponent<COIN_PARENT>().Init(transform.position);
-            });
+        Spawner.m_Monsters.Remove(this);
+
+        Base_Manager.Pool.Pooling_OBJ("Smoke").Get((value) =>
+        {
+            value.transform.position = new Vector3(transform.position.x, 0.5f, transform.position.z);
+            Base_Manager.instance.Return_Pool(value.GetComponent<ParticleSystem>().main.duration, value, "Smoke");
+        });
+
+        Base_Manager.Pool.Pooling_OBJ("COIN_PARENT").Get((value) =>
+        {
+            value.GetComponent<COIN_PARENT>().Init(transform.position);
+        });
 
 
-            for(int i = 0; i < 3; i++) // 아이템 테스트용
-            {
+        for(int i = 0; i < 3; i++) // 아이템 테스트용
+        {
                 Base_Manager.Pool.Pooling_OBJ("Item_OBJ").Get((value) =>
                 {
                     value.GetComponent<Item_OBJ>().Init(transform.position);
-                });
-            }
-
-            Base_Manager.Pool.m_pool_Dictionary["Monster"].Return(this.gameObject);
+            });
         }
+
+        Base_Manager.Pool.m_pool_Dictionary["Monster"].Return(this.gameObject);
     }
 
     private bool Critical(ref double dmg)

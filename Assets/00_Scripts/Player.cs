@@ -19,6 +19,7 @@ public class Player : Character
 
         Spawner.m_Players.Add(this);
         Stage_Manager.m_ReadyEvent += OnReady;
+        Stage_Manager.m_BossEvent += OnBoss;
 
         startPos = transform.position;
         rot = transform.rotation;
@@ -43,6 +44,12 @@ public class Player : Character
     {
         transform.position = startPos;
     }
+
+    private void OnBoss()
+    {
+        AnimatorChange("isIDLE");
+    }
+
     private void Update()
     {
         //FindClosestTarget(Spawner.m_Monsters.Select(m => m.transform).ToArray());
