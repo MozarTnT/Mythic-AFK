@@ -29,6 +29,7 @@ public class Monster : Character
     private void Update()
     {
         if (isSpawn == false) return;
+        if(Stage_Manager.m_State != Stage_State.Play) return;
 
         if(m_Target == null) FindClosestTarget(Spawner.m_Players.ToArray());
 

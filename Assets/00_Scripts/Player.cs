@@ -6,6 +6,7 @@ using UnityEditor.SceneManagement;
 public class Player : Character
 {
     private Character_Scriptable CH_Data;
+    public ParticleSystem Provocation_Effect;
     public GameObject TrailObject;
     public string CH_Name;
     Vector3 startPos;
@@ -48,6 +49,7 @@ public class Player : Character
     private void OnBoss()
     {
         AnimatorChange("isIDLE");
+        Provocation_Effect.Play();
     }
 
     private void Update()
@@ -101,14 +103,27 @@ public class Player : Character
                 Invoke("InitAttack", 1.0f);
             }
         }
-
-
-   
-        
-       
     }
 
-    
+    public void KnockBack(Vector3 targetPos)
+    {
+        transform.LookAt(targetPos);
+        StartCoroutine(KnockBackCoroutine(5.0f, 0.3f));
+    }
+
+    IEnumerator KnockBackCoroutine(float power, float duration)
+    {
+        float t = duration;
+        Vector3 force = this.transform.forward * -power;
+        force.y = 0f;
+
+        while(t > 0f)
+        {
+            t -= Time.deltaTime;
+            transform.position += force * Time.deltaTime;
+            yield return null;
+        }
+    }
 
     public override void GetDamage(double dmg)
     {

@@ -25,16 +25,29 @@ public class Main_UI : MonoBehaviour
         Monster_Slider_Count();
 
         Stage_Manager.m_ReadyEvent += () => FadeInOut(true);
+        Stage_Manager.m_BossEvent += OnBoss;
     }
 
-
+    [Header("##Default")]
     [SerializeField] private TextMeshProUGUI m_Level_Text;
     [SerializeField] private TextMeshProUGUI m_ALLATK_Text;
 
+    [Space(20.0f)]
+    [Header("##Fade")]
     [SerializeField] private Image m_Fade;
     [SerializeField] private float m_FadeDuration;
+
+    [Space(20.0f)]
+    [Header("##Monster_Slider")]
+    [SerializeField] private GameObject m_Monster_Slider_OBJ;
     [SerializeField] private Image m_Monster_Slider;
     [SerializeField] private TextMeshProUGUI m_Monster_Value_Text;
+
+    [Space(20.0f)]
+    [Header("##Boss_Slider")]
+    [SerializeField] private GameObject m_Boss_Slider_OBJ;
+    [SerializeField] private Image m_Boss_Slider_Image;
+    [SerializeField] private TextMeshProUGUI m_Boss_Value_Text, m_Boss_Stage_Text;
 
     public void Monster_Slider_Count()
     {
@@ -53,6 +66,11 @@ public class Main_UI : MonoBehaviour
     }
 
 
+    private void OnBoss()
+    {
+        m_Monster_Slider_OBJ.SetActive(false);
+        m_Boss_Slider_OBJ.SetActive(true);
+    }
 
     public void FadeInOut(bool FadeInOut, bool Sibling = false, Action action = null)
     {

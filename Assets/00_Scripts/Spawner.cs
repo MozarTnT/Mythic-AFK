@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor.UIElements;
 using UnityEngine;
 
@@ -38,6 +39,25 @@ public class Spawner : MonoBehaviour
             Base_Manager.Pool.m_pool_Dictionary["Monster"].Return(m_Monsters[i].gameObject);
         }
         m_Monsters.Clear();
+
+        StartCoroutine(BossSetCoroutine());
+    }
+
+    IEnumerator BossSetCoroutine()
+    {
+        yield return new WaitForSeconds(2.0f);
+        var monster = Instantiate(Resources.Load<GameObject>("Pool_OBJ/Boss"), Vector3.zero, Quaternion.Euler(0, 180, 0));
+        monster.GetComponent<Monster>().Init();
+
+        Vector3 pos = monster.transform.position;
+
+        for(int i = 0; i < m_Players.Count; i++)
+        {
+            if(Vector3.Distance(pos, m_Players[i].transform.position) <= 2.0f)
+            {
+                m_Players[i].KnockBack(pos);
+            }
+        }
     }
 
 

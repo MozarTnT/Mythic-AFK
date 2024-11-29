@@ -12,6 +12,7 @@ public enum Stage_State
     Ready,
     Play,
     Boss,
+    Boss_Play,
     Clear,
     Dead
 }
