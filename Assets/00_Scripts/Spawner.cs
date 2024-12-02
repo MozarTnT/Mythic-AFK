@@ -53,11 +53,18 @@ public class Spawner : MonoBehaviour
 
         for(int i = 0; i < m_Players.Count; i++)
         {
-            if(Vector3.Distance(pos, m_Players[i].transform.position) <= 2.0f)
+            if(Vector3.Distance(pos, m_Players[i].transform.position) <= 3.0f)
             {
-                m_Players[i].KnockBack(pos);
+                m_Players[i].transform.LookAt(monster.transform.position);
+                m_Players[i].KnockBack();
             }
         }
+
+        yield return new WaitForSeconds(1.5f);
+
+        m_Monsters.Add(monster.GetComponent<Monster>());
+
+        Stage_Manager.State_Change(Stage_State.Boss_Play);
     }
 
 

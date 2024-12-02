@@ -739,6 +739,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &5356037384514934461
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6179319294519708514}
+  m_Layer: 0
+  m_Name: Bullet_Transform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6179319294519708514
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5356037384514934461}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.03173, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1194207563518884348}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5377782775305474178
 GameObject:
   m_ObjectHideFlags: 0
@@ -833,7 +864,8 @@ Transform:
   m_LocalPosition: {x: -0.0125, y: 0.0104, z: -0.0058}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6179319294519708514}
   m_Father: {fileID: 2008364719247446428}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!33 &8986845856277954369
@@ -970,8 +1002,13 @@ MonoBehaviour:
   ATK: 0
   ATK_Speed: 0
   isDead: 0
-  m_BulletTransform: {fileID: 0}
+  m_BulletTransform: {fileID: 6179319294519708514}
+  Bullet_Name: MO_Boss
   m_Speed: 0.5
+  R_ATK: 20
+  R_HP: 500
+  R_Attack_Range: 5
+  isBoss: 1
 --- !u!95 &2259171115213023965
 Animator:
   serializedVersion: 5

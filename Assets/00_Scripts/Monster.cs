@@ -8,20 +8,21 @@ public class Monster : Character
     public float m_Speed;
     bool isSpawn = false;
 
-
+    public double R_ATK, R_HP;
+    public float R_Attack_Range;
+    public bool isBoss = false;
 
     protected override void Start()
     {
         base.Start();
-        HP = 20;
     }
 
     public void Init()
     {
         isDead = false;
-        ATK = 10;
-        HP = 20;
-        Attack_Range = 0.5f;
+        ATK = R_ATK;
+        HP = R_HP;
+        Attack_Range = R_Attack_Range;
         Target_Range = Mathf.Infinity;
         StartCoroutine(Spawn_Start());
     }
@@ -29,27 +30,29 @@ public class Monster : Character
     private void Update()
     {
         if (isSpawn == false) return;
-        if(Stage_Manager.m_State != Stage_State.Play) return;
-
-        if(m_Target == null) FindClosestTarget(Spawner.m_Players.ToArray());
-
-        // 타겟과의 거리 계산
-        if(m_Target != null)
+        if(Stage_Manager.m_State == Stage_State.Play || Stage_Manager.m_State == Stage_State.Boss_Play)
         {
-            float targetDistance = Vector3.Distance(transform.position, m_Target.position);
-            if(targetDistance > Attack_Range && isAttack == false)
+            if(m_Target == null) FindClosestTarget(Spawner.m_Players.ToArray());
+
+            // 타겟과의 거리 계산
+            if(m_Target != null)
             {
-                // 추적 범위 내에 있을 때 이동
-                AnimatorChange("isMOVE");
-                transform.LookAt(m_Target.position);
-                transform.position = Vector3.MoveTowards(transform.position, m_Target.position, Time.deltaTime);
-            }
-            else if(targetDistance <= Attack_Range && isAttack == false)
-            {
-                // 공격 범위 내에 있을 때 공격
-                isAttack = true;
-                AnimatorChange("isATTACK");
-                Invoke("InitAttack", 1.0f);
+                float targetDistance = Vector3.Distance(transform.position, m_Target.position);
+
+                if(targetDistance > Attack_Range && isAttack == false)
+                {
+                    // 추적 범위 내에 있을 때 이동
+                    AnimatorChange("isMOVE");
+                    transform.LookAt(m_Target.position);
+                    transform.position = Vector3.MoveTowards(transform.position, m_Target.position, Time.deltaTime);
+                }
+                else if(targetDistance <= Attack_Range && isAttack == false)
+                {
+                    // 공격 범위 내에 있을 때 공격
+                    isAttack = true;
+                    AnimatorChange("isATTACK");
+                    Invoke("InitAttack", 1.0f);
+                }
             }
         }
       
@@ -89,6 +92,11 @@ public class Monster : Character
 
         HP -= dmg;
 
+        if(isBoss)
+        {
+            Main_UI.instance.Boss_Slider_Count(HP, 500);
+        }
+
         if(HP <= 0)
         {
             isDead = true;
@@ -98,8 +106,15 @@ public class Monster : Character
 
     private void Dead_Event()
     {
-        Stage_Manager.Count++;
-        Main_UI.instance.Monster_Slider_Count();
+        if(!isBoss)
+        {
+            Stage_Manager.Count++;
+            Main_UI.instance.Monster_Slider_Count();
+        }
+        else
+        {
+            Stage_Manager.State_Change(Stage_State.Clear);
+        }
 
         Spawner.m_Monsters.Remove(this);
 
@@ -123,7 +138,14 @@ public class Monster : Character
             });
         }
 
-        Base_Manager.Pool.m_pool_Dictionary["Monster"].Return(this.gameObject);
+        if(!isBoss)
+        {
+            Base_Manager.Pool.m_pool_Dictionary["Monster"].Return(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
     }
 
     private bool Critical(ref double dmg)

@@ -19,6 +19,7 @@ public class Character : MonoBehaviour
 
     [SerializeField] private Transform m_BulletTransform;
 
+    public string Bullet_Name;
 
     protected virtual void Start()
     {
@@ -29,14 +30,14 @@ public class Character : MonoBehaviour
 
     protected void AnimatorChange(string temp) // 애니메이션 변환
     {
-        if(temp == "isATTACK")
-        {
-            animator.SetTrigger("isATTACK");
-            return;
-        }
-
         animator.SetBool("isIDLE", false);
         animator.SetBool("isMOVE", false);
+
+        if(temp == "isATTACK" || temp == "isCLEAR")
+        {
+            animator.SetTrigger(temp);
+            return;
+        }
 
         animator.SetBool(temp, true);
     }
@@ -51,7 +52,7 @@ public class Character : MonoBehaviour
         {
             value.transform.position = m_BulletTransform.position;
             value.transform.LookAt(m_Target);
-            value.GetComponent<Bullet>().Init(m_Target, ATK, "CH_01");
+            value.GetComponent<Bullet>().Init(m_Target, ATK, Bullet_Name);
         });
     }
 

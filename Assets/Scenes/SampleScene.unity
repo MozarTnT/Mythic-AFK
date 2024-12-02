@@ -12347,6 +12347,7 @@ MonoBehaviour:
   ATK_Speed: 0
   isDead: 0
   m_BulletTransform: {fileID: 74381893}
+  Bullet_Name: CH_01
   Provocation_Effect: {fileID: 2027942316}
   TrailObject: {fileID: 0}
   CH_Name: Cleric
@@ -17696,6 +17697,7 @@ MonoBehaviour:
   ATK_Speed: 0
   isDead: 0
   m_BulletTransform: {fileID: 0}
+  Bullet_Name: 
   Provocation_Effect: {fileID: 1598068351}
   TrailObject: {fileID: 2066730367}
   CH_Name: Barbarian

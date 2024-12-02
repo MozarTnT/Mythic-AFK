@@ -26,6 +26,7 @@ public class Main_UI : MonoBehaviour
 
         Stage_Manager.m_ReadyEvent += () => FadeInOut(true);
         Stage_Manager.m_BossEvent += OnBoss;
+        Stage_Manager.m_ClearEvent += OnClear;
     }
 
     [Header("##Default")]
@@ -49,6 +50,39 @@ public class Main_UI : MonoBehaviour
     [SerializeField] private Image m_Boss_Slider_Image;
     [SerializeField] private TextMeshProUGUI m_Boss_Value_Text, m_Boss_Stage_Text;
 
+
+    private void SliderOBJCheck(bool Boss)
+    {
+        m_Monster_Slider_OBJ.SetActive(!Boss);
+        m_Boss_Slider_OBJ.SetActive(Boss);
+
+        Monster_Slider_Count();
+        
+        float value = Boss ? 1.0f : 0f;
+        Boss_Slider_Count(value, 1.0f);
+      
+    }
+
+    private void OnBoss()
+    {
+        SliderOBJCheck(true);
+    }
+
+    private void OnClear()
+    {
+        SliderOBJCheck(false);
+        StartCoroutine(Clear_Delay());
+    }
+
+    IEnumerator Clear_Delay()
+    {
+        yield return new WaitForSeconds(2.0f);
+        FadeInOut(false);
+
+        yield return new WaitForSeconds(1.0f);
+        Stage_Manager.State_Change(Stage_State.Ready);
+    }
+
     public void Monster_Slider_Count()
     {
         float value = (float)Stage_Manager.Count / (float)Stage_Manager.MaxCount;
@@ -64,13 +98,21 @@ public class Main_UI : MonoBehaviour
         m_Monster_Slider.fillAmount = value;
         m_Monster_Value_Text.text = string.Format("{0:0.0}", value * 100.0f) + "%";
     }
-
-
-    private void OnBoss()
+    
+    public void Boss_Slider_Count(double hp, double maxHP)
     {
-        m_Monster_Slider_OBJ.SetActive(false);
-        m_Boss_Slider_OBJ.SetActive(true);
+        float value = (float)hp / (float)maxHP;
+
+        if(value <= 0f)
+        {
+            value = 0f;
+        }
+        m_Boss_Slider_Image.fillAmount = value;
+        m_Boss_Value_Text.text = string.Format("{0:0.0}", value * 100.0f) + "%";
     }
+
+
+
 
     public void FadeInOut(bool FadeInOut, bool Sibling = false, Action action = null)
     {

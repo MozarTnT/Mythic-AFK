@@ -6,6 +6,7 @@ using UnityEngine;
 public delegate void OnReadyEvent();
 public delegate void OnPlayEvent();
 public delegate void OnBossEvent();
+public delegate void OnBossPlayEvent();
 public delegate void OnClearEvent();
 public delegate void OnDeadEvent();
 
@@ -15,10 +16,12 @@ public class Stage_Manager
     public static Stage_State m_State;
     public static int MaxCount = 5;
     public static int Count;
+    public static int Stage;
 
     public static OnReadyEvent m_ReadyEvent; // 델리게이트 체인 : 하나의 델리게이트가 여러 함수를 참조 가능함
     public static OnPlayEvent m_PlayEvent;
     public static OnBossEvent m_BossEvent;
+    public static OnBossPlayEvent m_BossPlayEvent;
     public static OnClearEvent m_ClearEvent;
     public static OnDeadEvent m_DeadEvent;
 
@@ -37,10 +40,16 @@ public class Stage_Manager
                 m_PlayEvent?.Invoke();
                 break;
             case Stage_State.Boss:
+                Count = 0;
                 Debug.Log("isBoss");
                 m_BossEvent?.Invoke();
                 break;
+            case Stage_State.Boss_Play:
+                Debug.Log("isBoss_Play");
+                m_BossPlayEvent?.Invoke();
+                break;
             case Stage_State.Clear:
+                Stage++;
                 Debug.Log("isClear");
                 m_ClearEvent?.Invoke();
                 break;
