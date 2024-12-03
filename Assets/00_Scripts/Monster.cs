@@ -24,7 +24,21 @@ public class Monster : Character
         HP = R_HP;
         Attack_Range = R_Attack_Range;
         Target_Range = Mathf.Infinity;
+
+        if(isBoss)
+        {
+            StartCoroutine(SkillCoroutine());
+        }
+
         StartCoroutine(Spawn_Start());
+    }
+
+    IEnumerator SkillCoroutine()
+    {
+        yield return new WaitForSeconds(3.0f);
+        GetComponent<Skill_Base>().Set_Skill();
+
+        StartCoroutine(SkillCoroutine());
     }
 
     private void Update()

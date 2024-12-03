@@ -60,7 +60,7 @@ public class Item_OBJ : MonoBehaviour
 
     public void Init(Vector3 pos)
     {
-        rarity = (Rarity)Random.Range(0, 4);
+        rarity = (Rarity)Random.Range(0, 5);
 
         isCheck = false;
         transform.position = pos;
