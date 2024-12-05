@@ -33,7 +33,7 @@ public class Character : MonoBehaviour
         animator.SetBool("isIDLE", false);
         animator.SetBool("isMOVE", false);
 
-        if(temp == "isATTACK" || temp == "isCLEAR")
+        if(temp == "isATTACK" || temp == "isCLEAR" || temp == "isDEAD")
         {
             animator.SetTrigger(temp);
             return;

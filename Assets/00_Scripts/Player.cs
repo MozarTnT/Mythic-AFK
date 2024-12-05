@@ -19,9 +19,12 @@ public class Player : Character
         Data_Set(Resources.Load<Character_Scriptable>("Scriptable/" + CH_Name));
 
         Spawner.m_Players.Add(this);
+
         Stage_Manager.m_ReadyEvent += OnReady;
         Stage_Manager.m_BossEvent += OnBoss;
         Stage_Manager.m_ClearEvent += OnClear;
+        Stage_Manager.m_DeadEvent += OnDead;
+
         startPos = transform.position;
         rot = transform.rotation;
     }
@@ -44,6 +47,9 @@ public class Player : Character
     private void OnReady()
     {
         AnimatorChange("isIDLE");
+        isDead = false;
+        Spawner.m_Players.Add(this);
+        Set_ATKHP();
         transform.position = startPos;
         transform.rotation = rot;
     }
@@ -59,9 +65,15 @@ public class Player : Character
         AnimatorChange("isCLEAR");
     }
 
+    private void OnDead()
+    {
+        Spawner.m_Players.Add(this);
+    }
+
     private void Update()
     {
-        //FindClosestTarget(Spawner.m_Monsters.Select(m => m.transform).ToArray());
+        if(isDead) return;
+
         if(Stage_Manager.m_State == Stage_State.Play || Stage_Manager.m_State == Stage_State.Boss_Play)
         {
             FindClosestTarget(Spawner.m_Monsters.ToArray());
@@ -135,12 +147,32 @@ public class Player : Character
     {
         base.GetDamage(dmg);
 
+        if(Stage_Manager.isDead) return;
+
+
         var goObj = Base_Manager.Pool.Pooling_OBJ("HIT_TEXT").Get((value) =>
         {
             value.GetComponent<HIT_TEXT>().Init(transform.position, dmg, true);
         });
 
         HP -= dmg;
+
+        if(HP <= 0)
+        {
+            isDead = true;
+            DeadEvent();
+        }
+    }
+
+    private void DeadEvent()
+    {
+        Spawner.m_Players.Remove(this);
+        if(Spawner.m_Players.Count <= 0 && Stage_Manager.isDead == false)
+        {
+            Stage_Manager.State_Change(Stage_State.Dead);
+        }
+        AnimatorChange("isDEAD");
+        m_Target = null;
     }
 
     protected override void Attack()

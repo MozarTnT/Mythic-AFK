@@ -15,6 +15,8 @@ public class Monster : Character
     protected override void Start()
     {
         base.Start();
+
+        Stage_Manager.m_DeadEvent += OnDead;
     }
 
     public void Init()
@@ -41,6 +43,12 @@ public class Monster : Character
         StartCoroutine(SkillCoroutine());
     }
 
+    void OnDead()
+    {
+        StopAllCoroutines();
+        AnimatorChange("isIDLE");
+    }
+
     private void Update()
     {
         if (isSpawn == false) return;
@@ -51,6 +59,11 @@ public class Monster : Character
             // 타겟과의 거리 계산
             if(m_Target != null)
             {
+                if(m_Target.GetComponent<Character>().isDead)
+                {
+                    FindClosestTarget(Spawner.m_Players.ToArray());
+                }
+
                 float targetDistance = Vector3.Distance(transform.position, m_Target.position);
 
                 if(targetDistance > Attack_Range && isAttack == false)
@@ -122,8 +135,11 @@ public class Monster : Character
     {
         if(!isBoss)
         {
-            Stage_Manager.Count++;
-            Main_UI.instance.Monster_Slider_Count();
+            if(!Stage_Manager.isDead)
+            {
+                Stage_Manager.Count++;
+                Main_UI.instance.Monster_Slider_Count();
+            }
         }
         else
         {

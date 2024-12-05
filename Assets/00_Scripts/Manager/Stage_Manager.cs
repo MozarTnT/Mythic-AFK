@@ -18,6 +18,8 @@ public class Stage_Manager
     public static int Count;
     public static int Stage;
 
+    public static bool isDead = false;
+
     public static OnReadyEvent m_ReadyEvent; // 델리게이트 체인 : 하나의 델리게이트가 여러 함수를 참조 가능함
     public static OnPlayEvent m_PlayEvent;
     public static OnBossEvent m_BossEvent;
@@ -55,6 +57,7 @@ public class Stage_Manager
                 break;
             case Stage_State.Dead:
                 Debug.Log("isDead");
+                isDead = true;
                 m_DeadEvent?.Invoke();
                 break;
         }

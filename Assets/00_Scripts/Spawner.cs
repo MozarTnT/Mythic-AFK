@@ -28,6 +28,8 @@ public class Spawner : MonoBehaviour
         coroutine = StartCoroutine(SpawnCoroutine());
     }
 
+
+
     public void OnBoss()
     {
         if(coroutine != null)
@@ -42,6 +44,7 @@ public class Spawner : MonoBehaviour
 
         StartCoroutine(BossSetCoroutine());
     }
+
 
     IEnumerator BossSetCoroutine()
     {
