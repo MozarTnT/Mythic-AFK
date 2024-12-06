@@ -16,7 +16,7 @@ public class Player : Character
     {
         base.Start();
 
-        Data_Set(Resources.Load<Character_Scriptable>("Scriptable/" + CH_Name));
+        Data_Set(Resources.Load<Character_Scriptable>("Scriptable/Character/" + CH_Name));
 
         Spawner.m_Players.Add(this);
 
