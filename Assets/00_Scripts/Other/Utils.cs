@@ -37,5 +37,11 @@ public class Utils
 
         return "<color=#FFFFFF>";
     }
+
+    // 지수 증가 공식 -> 값을 일정 비율로 지속적 증가시킴
+    public static float CalculateValue(float baseValue, int Level, float value)
+    {
+        return baseValue * Mathf.Pow(Level, value);
+    }
     
 }

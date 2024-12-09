@@ -13,9 +13,22 @@ MonoBehaviour:
   m_Name: LevelDesignData
   m_EditorClassIdentifier: 
   levelData:
-    currentLevel: 100
+    currentLevel: 10
     C_ATK: 1.5
     C_HP: 1.52
     C_EXP: 2
     C_MAXEXP: 2.5
     C_MONEY: 2
+    B_ATK: 10
+    B_HP: 50
+    B_EXP: 5
+    B_MAXEXP: 15
+    B_MONEY: 10
+  stageData:
+    currentStage: 10
+    m_ATK: 1.6
+    m_HP: 1.6
+    m_MONEY: 1.5
+    B_ATK: 5
+    B_HP: 30
+    B_MONEY: 5
