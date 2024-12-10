@@ -11,8 +11,10 @@ public class Base_Manager : MonoBehaviour
 
     private static Pool_Manager s_Pool = new Pool_Manager();
     private static Player_Manager s_Player = new Player_Manager();
+    private static Data_Manager s_Data = new Data_Manager();
     public static Pool_Manager Pool { get { return s_Pool; } }
     public static Player_Manager Player { get { return s_Player; } }
+    public static Data_Manager Data { get { return s_Data; } }
 
     #endregion
 

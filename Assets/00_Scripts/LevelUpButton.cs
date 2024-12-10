@@ -66,8 +66,8 @@ public class LevelUpButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandl
     {
         m_EXP_Slider.fillAmount = Base_Manager.Player.EXP_Percentage();    // 경험치 게이지 업데이트
         EXP_Text.text = string.Format("{0:0.00}%", Base_Manager.Player.EXP_Percentage() * 100.0f);    // 경험치 퍼센트 표시
-        ATK_Text.text = "+" + StringMethod.ToCurrencyString(Base_Manager.Player.Next_ATK());          // 다음 공격력 증가량
-        HP_Text.text = "+" + StringMethod.ToCurrencyString(Base_Manager.Player.Next_HP());            // 다음 체력 증가량
+        ATK_Text.text = "+" + StringMethod.ToCurrencyString(Utils.Data.levelData.ATK());          // 다음 공격력 증가량
+        HP_Text.text = "+" + StringMethod.ToCurrencyString(Utils.Data.levelData.HP());            // 다음 체력 증가량
         Get_EXP_Text.text = "<color=#00FF00>EXP</color> +" + string.Format("{0:0.00}", Base_Manager.Player.Next_EXP()) + "%";    // 획득 경험치량
     }
 

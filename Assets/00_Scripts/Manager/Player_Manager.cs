@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Player_Manager
 {
-    public int Level;
-    public double EXP;
     public double ATK = 10;
     public double HP = 50;
     public float Critical_Percentage = 20.0f;
@@ -14,12 +12,13 @@ public class Player_Manager
 
     public void EXP_UP()
     {
-        EXP += float.Parse(CSV_Importer.EXP[Level]["Get_EXP"].ToString());
-        ATK += Next_ATK();
-        HP += Next_HP();
-        if(EXP >= float.Parse(CSV_Importer.EXP[Level]["EXP"].ToString()))
+        Base_Manager.Data.EXP += Utils.Data.levelData.EXP();
+        ATK += Utils.Data.levelData.ATK();
+        HP += Utils.Data.levelData.HP();
+        if(Base_Manager.Data.EXP >= Utils.Data.levelData.MAXEXP())
         {
-            Level++;
+            Base_Manager.Data.Level++;
+            Base_Manager.Data.EXP = 0;
             Main_UI.instance.TextCheck();
         }
 
@@ -31,39 +30,20 @@ public class Player_Manager
 
     public float EXP_Percentage()
     {
-        float exp = float.Parse(CSV_Importer.EXP[Level]["EXP"].ToString());
-        double myEXP = EXP;
-
-        if(Level >= 1)
-        {
-            exp -= float.Parse(CSV_Importer.EXP[Level - 1]["EXP"].ToString());
-            myEXP -= float.Parse(CSV_Importer.EXP[Level - 1]["EXP"].ToString());
-        }
+        float exp = (float)Utils.Data.levelData.MAXEXP();
+        double myEXP = Base_Manager.Data.EXP;
 
         return (float)myEXP / exp;
     }
 
     public float Next_EXP()
     {
-        float exp = float.Parse(CSV_Importer.EXP[Level]["EXP"].ToString());
-        float myExp = float.Parse(CSV_Importer.EXP[Level]["Get_EXP"].ToString());
-        if(Level >= 1)
-        {
-            exp -= float.Parse(CSV_Importer.EXP[Level - 1]["EXP"].ToString());
-        }
+        float exp = (float)Utils.Data.levelData.MAXEXP();
+        float myExp = (float)Utils.Data.levelData.EXP();
 
         return (myExp / exp) * 100.0f;
     }
 
-    public double Next_ATK()
-    {
-        return float.Parse(CSV_Importer.EXP[Level]["Get_EXP"].ToString()) * (Level + 1) / 5;
-    }
-
-    public double Next_HP()
-    {
-        return float.Parse(CSV_Importer.EXP[Level]["Get_EXP"].ToString()) * (Level + 1) / 3;
-    }
 
     public double Get_ATK(Rarity rarity) // 나중에 레벨디자인
     {

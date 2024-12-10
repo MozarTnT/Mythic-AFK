@@ -36,6 +36,8 @@ public class COIN_PARENT : MonoBehaviour
         // 부모를 특정 레이어로 설정
         transform.parent = Base_Canvas.instance.HOLDER_LAYER(0);
 
+        Base_Manager.Data.Money += Utils.Data.stageData.MONEY();
+
         // 코인 효과 코루틴 시작
         StartCoroutine(Coin_Effect());
     }
@@ -86,6 +88,8 @@ public class COIN_PARENT : MonoBehaviour
             }
             yield return null; // 다음 프레임까지 대기
         }
+
+        Main_UI.instance.TextCheck();
     }
 
 

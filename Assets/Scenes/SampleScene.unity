@@ -3918,7 +3918,7 @@ GameObject:
   - component: {fileID: 665443509}
   - component: {fileID: 665443508}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Text_Coin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8964,6 +8964,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Level_Text: {fileID: 667566216}
   m_ALLATK_Text: {fileID: 1737170906}
+  m_LevelUp_Money_Text: {fileID: 1790144705}
+  m_Money_Text: {fileID: 665443508}
   m_Fade: {fileID: 310965894}
   m_FadeDuration: 0.3
   m_Monster_Slider_OBJ: {fileID: 1146130767}

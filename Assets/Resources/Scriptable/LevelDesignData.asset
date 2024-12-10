@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 823f2b44db6386f448f0bebc6df77ed7, type: 3}
   m_Name: LevelDesignData
   m_EditorClassIdentifier: 
+  currentLevel: 1
+  currentStage: 1
   levelData:
     currentLevel: 10
     C_ATK: 1.5
@@ -26,9 +28,9 @@ MonoBehaviour:
     B_MONEY: 10
   stageData:
     currentStage: 10
-    m_ATK: 1.6
-    m_HP: 1.6
-    m_MONEY: 1.5
+    M_ATK: 1.6
+    M_HP: 1.6
+    M_MONEY: 1.5
     B_ATK: 5
     B_HP: 30
     B_MONEY: 5

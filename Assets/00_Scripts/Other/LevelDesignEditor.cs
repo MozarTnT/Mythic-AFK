@@ -32,9 +32,9 @@ public class LevelDesignEditor : Editor
         GetColorGUI("MONEY", StringMethod.ToCurrencyString(Utils.CalculateValue(data.B_MONEY, design.currentLevel, data.C_MONEY)), Color.yellow);
         EditorGUILayout.Space(20);
         EditorGUILayout.LabelField("스테이지 데이터", EditorStyles.boldLabel);
-        GetColorGUI("ATK", StringMethod.ToCurrencyString(Utils.CalculateValue(s_Data.B_ATK, design.currentStage, s_Data.m_ATK)), Color.green);
-        GetColorGUI("HP", StringMethod.ToCurrencyString(Utils.CalculateValue(s_Data.B_HP, design.currentStage, s_Data.m_HP)), Color.red);
-        GetColorGUI("MONEY", StringMethod.ToCurrencyString(Utils.CalculateValue(s_Data.B_MONEY, design.currentStage, s_Data.m_MONEY)), Color.yellow);
+        GetColorGUI("ATK", StringMethod.ToCurrencyString(Utils.CalculateValue(s_Data.B_ATK, design.currentStage, s_Data.M_ATK)), Color.green);
+        GetColorGUI("HP", StringMethod.ToCurrencyString(Utils.CalculateValue(s_Data.B_HP, design.currentStage, s_Data.M_HP)), Color.red);
+        GetColorGUI("MONEY", StringMethod.ToCurrencyString(Utils.CalculateValue(s_Data.B_MONEY, design.currentStage, s_Data.M_MONEY)), Color.yellow);
 
     }
 

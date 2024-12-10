@@ -7,6 +7,7 @@ public class Utils
 {
     public static SpriteAtlas m_Atlas = Resources.Load<SpriteAtlas>("Atlas");
     public static Stack<UI_Base> UI_Holder = new Stack<UI_Base>();
+    public static LevelDesign Data = Resources.Load<LevelDesign>("Scriptable/LevelDesignData");
     public static void CloseAllPopupUI()
     {
         while(UI_Holder.Count > 0) ClosePopupUI();
@@ -39,9 +40,22 @@ public class Utils
     }
 
     // 지수 증가 공식 -> 값을 일정 비율로 지속적 증가시킴
-    public static float CalculateValue(float baseValue, int Level, float value)
+    public static double CalculateValue(float baseValue, int Level, float value)
     {
-        return baseValue * Mathf.Pow(Level, value);
+        return baseValue * Mathf.Pow((Level + 1), value);
+    }
+
+    public static bool Coin_Check(double value)
+    {
+        if(Base_Manager.Data.Money >= value)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
     }
     
 }

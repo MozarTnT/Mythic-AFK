@@ -33,6 +33,8 @@ public class Main_UI : MonoBehaviour
     [Header("##Default")]
     [SerializeField] private TextMeshProUGUI m_Level_Text;
     [SerializeField] private TextMeshProUGUI m_ALLATK_Text;
+    [SerializeField] private TextMeshProUGUI m_LevelUp_Money_Text;
+    [SerializeField] private TextMeshProUGUI m_Money_Text;
 
     [Space(20.0f)]
     [Header("##Fade")]
@@ -206,8 +208,16 @@ public class Main_UI : MonoBehaviour
 
     public void TextCheck()
     {
-        m_Level_Text.text = "Lv." + (Base_Manager.Player.Level + 1).ToString();
+        m_Level_Text.text = "Lv." + (Base_Manager.Data.Level + 1).ToString();
         m_ALLATK_Text.text = StringMethod.ToCurrencyString(Base_Manager.Player.Average_ATK());
+
+        double LevelUpMoneyValue = Utils.Data.levelData.MONEY();
+
+        m_LevelUp_Money_Text.text = StringMethod.ToCurrencyString(LevelUpMoneyValue);
+        
+        m_LevelUp_Money_Text.color = Utils.Coin_Check(LevelUpMoneyValue) ? Color.green : Color.red;
+
+        m_Money_Text.text = StringMethod.ToCurrencyString(Base_Manager.Data.Money);
     }
   
 }

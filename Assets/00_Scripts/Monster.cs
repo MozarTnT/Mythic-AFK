@@ -8,7 +8,6 @@ public class Monster : Character
     public float m_Speed;
     bool isSpawn = false;
 
-    public double R_ATK, R_HP;
     public float R_Attack_Range;
     public bool isBoss = false;
 
@@ -22,8 +21,11 @@ public class Monster : Character
     public void Init()
     {
         isDead = false;
-        ATK = R_ATK;
-        HP = R_HP;
+        ATK = Utils.Data.stageData.ATK();
+        HP = Utils.Data.stageData.HP();
+
+        Debug.Log(ATK + " : " + HP);
+
         Attack_Range = R_Attack_Range;
         Target_Range = Mathf.Infinity;
 
