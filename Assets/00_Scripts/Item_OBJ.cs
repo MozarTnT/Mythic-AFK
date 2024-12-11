@@ -12,6 +12,8 @@ public class Item_OBJ : MonoBehaviour
     [SerializeField] private float firingAngle = 45.0f;
     [SerializeField] private float gravity = 9.8f;
 
+
+    Item_Scriptable m_Item;
     Rarity rarity;
 
     bool isCheck = false;
@@ -34,7 +36,7 @@ public class Item_OBJ : MonoBehaviour
         ItemTextRect.gameObject.SetActive(true);
         ItemTextRect.parent = Base_Canvas.instance.HOLDER_LAYER(2);
 
-        m_Text.text = Utils.String_Color_Rarity(rarity) + "TEST ITEM" + "</color>";
+        m_Text.text = Utils.String_Color_Rarity(rarity) + m_Item.Item_Name + "</color>";
 
         StartCoroutine(LootItem());
     }
@@ -58,9 +60,10 @@ public class Item_OBJ : MonoBehaviour
         Base_Manager.Pool.m_pool_Dictionary["Item_OBJ"].Return(this.gameObject);
     }
 
-    public void Init(Vector3 pos)
+    public void Init(Vector3 pos, Item_Scriptable data)
     {
-        rarity = (Rarity)Random.Range(0, 5);
+        m_Item = data;
+        rarity = m_Item.rarity;
 
         isCheck = false;
         transform.position = pos;

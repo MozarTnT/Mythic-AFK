@@ -29,8 +29,8 @@ public class Utils
     {
         switch(rare)
         {
-            case Rarity.Uncommon: return "<color=#FFFFFF>";
-            case Rarity.Common: return "<color=#00FF00>";
+            case Rarity.Common: return "<color=#FFFFFF>";
+            case Rarity.Uncommon: return "<color=#00FF00>";
             case Rarity.Rare: return "<color=#00D8FF>";
             case Rarity.Hero: return "<color=#B750C3>";
             case Rarity.Legendary: return "<color=#FF9000>"; 

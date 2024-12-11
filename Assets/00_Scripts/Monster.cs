@@ -162,11 +162,13 @@ public class Monster : Character
         });
 
 
-        for(int i = 0; i < 3; i++) // 아이템 테스트용
+        var Items = Base_Manager.Item.GetDropSet();
+
+        for(int i = 0; i < Items.Count; i++) // 아이템 테스트용
         {
-                Base_Manager.Pool.Pooling_OBJ("Item_OBJ").Get((value) =>
-                {
-                    value.GetComponent<Item_OBJ>().Init(transform.position);
+            Base_Manager.Pool.Pooling_OBJ("Item_OBJ").Get((value) =>
+            {
+                value.GetComponent<Item_OBJ>().Init(transform.position, Items[i]);
             });
         }
 
