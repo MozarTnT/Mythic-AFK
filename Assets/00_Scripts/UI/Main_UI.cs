@@ -57,6 +57,16 @@ public class Main_UI : MonoBehaviour
     [Header("##Dead_Frame")]
     [SerializeField] private GameObject Dead_Frame;
 
+    [Space(20.0f)]
+    [Header("##Legendary_PopUP")]
+    [SerializeField] private Animator m_Legendary_PopUP;
+    [SerializeField] private Image m_Item_Frame;
+    [SerializeField] private Image m_PopUp_Image;
+    [SerializeField] private TextMeshProUGUI m_PopUp_Text;
+    Coroutine Legendary_Coroutine;
+    
+    bool isPopUP = false;
+    
     public void Set_Boss_State()
     {
         Stage_Manager.isDead = false;
@@ -219,5 +229,36 @@ public class Main_UI : MonoBehaviour
 
         m_Money_Text.text = StringMethod.ToCurrencyString(Base_Manager.Data.Money);
     }
+
+    public void GetLegendaryPopUP(Item_Scriptable item)
+    {
+        if(isPopUP == true)
+        {
+            m_Legendary_PopUP.gameObject.SetActive(false);
+        }
+        isPopUP = true;
+        m_Legendary_PopUP.gameObject.SetActive(true);
+
+        m_Item_Frame.sprite = Utils.Get_Atlas(item.rarity.ToString());
+
+        m_PopUp_Image.sprite = Utils.Get_Atlas(item.name);
+        m_PopUp_Image.SetNativeSize();
+
+        m_PopUp_Text.text = Utils.String_Color_Rarity(item.rarity) + item.Item_Name + "</color>을(를) 획득했습니다!";
+
+        if(Legendary_Coroutine != null) // 코루틴 중복시 바로 삭제 방지
+        {
+            StopCoroutine(Legendary_Coroutine);
+        }
+        Legendary_Coroutine = StartCoroutine(Legendary_PopUP_Coroutine());
+    }
+
+    IEnumerator Legendary_PopUP_Coroutine()
+    {
+        yield return new WaitForSeconds(2.0f);
+        isPopUP = false;
+        m_Legendary_PopUP.SetTrigger("Close");
+    }
+
   
 }

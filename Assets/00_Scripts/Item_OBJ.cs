@@ -55,6 +55,11 @@ public class Item_OBJ : MonoBehaviour
 
         m_Loot.Play();
 
+        if((int)rarity >= (int)Rarity.Hero)
+        {
+            Main_UI.instance.GetLegendaryPopUP(m_Item);
+        }
+
         yield return new WaitForSeconds(0.5f);
 
         Base_Manager.Pool.m_pool_Dictionary["Item_OBJ"].Return(this.gameObject);
