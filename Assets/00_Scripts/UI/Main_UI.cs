@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class Main_UI : MonoBehaviour
@@ -23,6 +24,12 @@ public class Main_UI : MonoBehaviour
     {
         TextCheck();
         Monster_Slider_Count();
+
+        for(int i = 0; i < m_ItemContent.childCount; i++)
+        { 
+            m_Item_Texts.Add(m_ItemContent.GetChild(i).GetComponent<TextMeshProUGUI>());
+            m_Item_Coroutines.Add(null);
+        }
 
         Stage_Manager.m_ReadyEvent += () => FadeInOut(true);
         Stage_Manager.m_BossEvent += OnBoss;
@@ -66,7 +73,94 @@ public class Main_UI : MonoBehaviour
     Coroutine Legendary_Coroutine;
     
     bool isPopUP = false;
-    
+
+    [Space(20.0f)]
+    [Header("##Item_PopUP")]
+    [SerializeField] private Transform m_ItemContent;
+    private List<TextMeshProUGUI> m_Item_Texts = new List<TextMeshProUGUI>();
+    private List<Coroutine> m_Item_Coroutines = new List<Coroutine>();
+
+    public void GetItem(Item_Scriptable item)
+    {
+        bool AllActive = true;
+
+        for(int i = 0; i < m_Item_Texts.Count; i++)
+        {
+            if(m_Item_Texts[i].gameObject.activeSelf == false) // 비활성화일때
+            {
+                m_Item_Texts[i].gameObject.SetActive(true);
+                m_Item_Texts[i].text = "아이템을 획득하였습니다 : " + Utils.String_Color_Rarity(item.rarity) + "[" + item.Item_Name + "]</color>";
+                
+                for(int j = 0; j < i; j++) // 먼저 나온 오브젝트 위로 이동
+                {
+                    RectTransform rect = m_Item_Texts[j].GetComponent<RectTransform>();
+                    rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, rect.anchoredPosition.y + 50.0f);
+                }
+
+                if(m_Item_Coroutines[i] != null)
+                {
+                    StopCoroutine(m_Item_Coroutines[i]);
+                }
+                m_Item_Coroutines[i] = StartCoroutine(Item_Text_FadeOut(m_Item_Texts[i].GetComponent<RectTransform>()));
+                AllActive = false;
+                break;
+            }
+        }
+
+        if(AllActive) // 모든 오브젝트가 활성화 상태라면
+        {
+            GameObject BaseRect = null;
+            float yCount = 0.0f;
+            for(int i = 0; i < m_Item_Texts.Count; i++)
+            {
+                RectTransform rect = m_Item_Texts[i].GetComponent<RectTransform>();
+                if(rect.anchoredPosition.y > yCount)
+                {
+                    BaseRect = rect.gameObject;
+                    yCount = rect.anchoredPosition.y;
+                }
+            }
+
+            for(int i = 0; i < m_Item_Texts.Count; i++)
+            {
+                if (BaseRect == m_Item_Texts[i].gameObject)
+                {
+                    m_Item_Texts[i].gameObject.SetActive(false);
+                    m_Item_Texts[i].GetComponent<RectTransform>().anchoredPosition = new Vector2(0.0f, 0.0f);
+
+                    m_Item_Texts[i].gameObject.SetActive(true);
+                    m_Item_Texts[i].text = "아이템을 획득하였습니다 : " + Utils.String_Color_Rarity(item.rarity) + "[" + item.Item_Name + "]</color>";
+
+                    if(m_Item_Coroutines[i] != null)
+                    {
+                        StopCoroutine(m_Item_Coroutines[i]);
+                    }
+                    m_Item_Coroutines[i] = StartCoroutine(Item_Text_FadeOut(m_Item_Texts[i].GetComponent<RectTransform>()));
+                }
+                else
+                {
+                    RectTransform rect = m_Item_Texts[i].GetComponent<RectTransform>();
+                    rect.anchoredPosition = new Vector2(0.0f, rect.anchoredPosition.y + 50.0f);
+                }
+            }
+        }
+
+        if((int)item.rarity >= (int)Rarity.Hero) // 상단 애니메이션 노출
+        {
+            GetLegendaryPopUP(item);
+        }
+
+    }
+
+    IEnumerator Item_Text_FadeOut(RectTransform rect)
+    {
+        yield return new WaitForSeconds(2.0f);
+        rect.gameObject.SetActive(false);
+        rect.anchoredPosition = new Vector2(0.0f, 0.0f);
+    }
+
+
+
     public void Set_Boss_State()
     {
         Stage_Manager.isDead = false;
@@ -230,7 +324,7 @@ public class Main_UI : MonoBehaviour
         m_Money_Text.text = StringMethod.ToCurrencyString(Base_Manager.Data.Money);
     }
 
-    public void GetLegendaryPopUP(Item_Scriptable item)
+    private void GetLegendaryPopUP(Item_Scriptable item)
     {
         if(isPopUP == true)
         {
