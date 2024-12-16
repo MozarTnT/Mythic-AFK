@@ -126,7 +126,7 @@ public class Player : Character
 
     public void KnockBack()
     {
-        StartCoroutine(KnockBackCoroutine(5.0f, 0.3f));
+        StartCoroutine(KnockBackCoroutine(3.0f, 0.3f));
     }
 
     IEnumerator KnockBackCoroutine(float power, float duration)
@@ -138,7 +138,10 @@ public class Player : Character
         while(t > 0f)
         {
             t -= Time.deltaTime;
-            transform.position += force * Time.deltaTime;
+            if(Vector3.Distance(Vector3.zero, transform.position) < 3.0f)
+            {
+                transform.position += force * Time.deltaTime;
+            }
             yield return null;
         }
     }

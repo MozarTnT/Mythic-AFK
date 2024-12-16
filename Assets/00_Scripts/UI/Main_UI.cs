@@ -42,6 +42,10 @@ public class Main_UI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI m_ALLATK_Text;
     [SerializeField] private TextMeshProUGUI m_LevelUp_Money_Text;
     [SerializeField] private TextMeshProUGUI m_Money_Text;
+    [SerializeField] private TextMeshProUGUI m_Stage_Count_Text;
+    [SerializeField] private TextMeshProUGUI m_Stage_Text;
+
+    Color m_Stage_Color = new Color(0, 0.7295136f, 1.0f, 1.0f);
 
     [Space(20.0f)]
     [Header("##Fade")]
@@ -192,6 +196,7 @@ public class Main_UI : MonoBehaviour
 
     private void OnBoss()
     {
+        TextCheck();
         SliderOBJCheck(true);
     }
 
@@ -203,6 +208,7 @@ public class Main_UI : MonoBehaviour
 
     private void OnDead()
     {
+        TextCheck();
         StartCoroutine(Dead_Delay());
     }
 
@@ -322,6 +328,18 @@ public class Main_UI : MonoBehaviour
         m_LevelUp_Money_Text.color = Utils.Coin_Check(LevelUpMoneyValue) ? Color.green : Color.red;
 
         m_Money_Text.text = StringMethod.ToCurrencyString(Base_Manager.Data.Money);
+
+        m_Stage_Text.text = Stage_Manager.isDead ? "반복중..." : "진행중...";
+        m_Stage_Text.color = Stage_Manager.isDead ? Color.yellow : m_Stage_Color;
+
+        int stageValue = Base_Manager.Data.Stage + 1;
+        int stageForward = (stageValue / 10) + 1;
+        int stageBack = stageValue % 10;
+
+        // 스테이지 / 10 + 1
+        
+        m_Stage_Count_Text.text = "보통 " + stageForward.ToString() + " - " + stageBack.ToString();
+
     }
 
     private void GetLegendaryPopUP(Item_Scriptable item)

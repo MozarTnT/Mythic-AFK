@@ -7,6 +7,7 @@ public class Monster : Character
 {
     public float m_Speed;
     bool isSpawn = false;
+    double MaxHP;
 
     public float R_Attack_Range;
     public bool isBoss = false;
@@ -21,10 +22,10 @@ public class Monster : Character
     public void Init()
     {
         isDead = false;
-        ATK = Utils.Data.stageData.ATK();
-        HP = Utils.Data.stageData.HP();
+        ATK = isBoss ? Utils.Data.stageData.ATK() * 10.0f : Utils.Data.stageData.ATK();
+        HP = isBoss ? Utils.Data.stageData.HP() * 10.0f : Utils.Data.stageData.HP();
 
-        Debug.Log(ATK + " : " + HP);
+        MaxHP = HP;
 
         Attack_Range = R_Attack_Range;
         Target_Range = Mathf.Infinity;
@@ -123,7 +124,7 @@ public class Monster : Character
 
         if(isBoss)
         {
-            Main_UI.instance.Boss_Slider_Count(HP, 500);
+            Main_UI.instance.Boss_Slider_Count(HP, MaxHP);
         }
 
         if(HP <= 0)

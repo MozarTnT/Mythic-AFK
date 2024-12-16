@@ -9,8 +9,8 @@ public class Spawner : MonoBehaviour
 {
     // 스폰 기능 : 몬스터를 특정 위치에 특정 시간마다 랜덤으로 생성
 
-    public int m_Count; // 생성 개수
-    public float m_SpawnTime; // 몇 초마다 생성할지
+    private int m_Count; // 생성 개수
+    private float m_SpawnTime; // 몇 초마다 생성할지
 
     public static List<Monster> m_Monsters = new List<Monster>();
     public static List<Player> m_Players = new List<Player>();
@@ -19,8 +19,15 @@ public class Spawner : MonoBehaviour
 
     private void Start()
     {
+        Stage_Manager.m_ReadyEvent += OnReady;
         Stage_Manager.m_PlayEvent += OnPlay;
         Stage_Manager.m_BossEvent += OnBoss;
+    }
+
+    public void OnReady()
+    {
+        m_Count = int.Parse(CSV_Importer.Spawn_Design[Base_Manager.Data.Stage]["Spawn_Count"].ToString());
+        m_SpawnTime = float.Parse(CSV_Importer.Spawn_Design[Base_Manager.Data.Stage]["Spawn_Timer"].ToString());
     }
 
     public void OnPlay()
@@ -75,8 +82,10 @@ public class Spawner : MonoBehaviour
     IEnumerator SpawnCoroutine() // 스폰 관련된 코루틴
     {
         Vector3 pos;
+        //    10 =       35      -  25
+        int value = m_Count - m_Monsters.Count;
 
-        for(int i = 0; i < m_Count; i++)
+        for(int i = 0; i < value; i++)
         {
             pos = Vector3.zero + Random.insideUnitSphere * 5.0f; 
             pos.y = 0f;
