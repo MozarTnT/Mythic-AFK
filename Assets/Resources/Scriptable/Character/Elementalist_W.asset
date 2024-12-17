@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d9c319e751ca74a87622853ff1a6dd, type: 3}
   m_Name: Elementalist_W
   m_EditorClassIdentifier: 
-  m_CharacterName: Elementalist_W
+  m_Character_Name: Elementalist_W
   m_Attack_Range: 5
   m_Rarity: 2

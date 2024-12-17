@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d9c319e751ca74a87622853ff1a6dd, type: 3}
   m_Name: Cleric
   m_EditorClassIdentifier: 
-  m_CharacterName: Cleric
+  m_Character_Name: Cleric
   m_Attack_Range: 3
   m_Rarity: 0

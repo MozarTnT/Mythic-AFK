@@ -33,6 +33,8 @@ public class Base_Manager : MonoBehaviour
             instance = this;
 
             Pool.Initialize(transform);
+            
+            Data.Init();
             Item.Init();    
 
             StartCoroutine(Action_Coroutine(() => Stage_Manager.State_Change(Stage_State.Ready), 0.3f));

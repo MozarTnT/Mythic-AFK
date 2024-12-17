@@ -14,7 +14,6 @@ public class Item_Manager
         for(int i = 0; i < datas.Length; i++)
         {
             Item_Datas.Add(datas[i].name, datas[i]);
-            Debug.Log(datas[i].name + " : " + datas[i].Item_Name);
         }
     }
 

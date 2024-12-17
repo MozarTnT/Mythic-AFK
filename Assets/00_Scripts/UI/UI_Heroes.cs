@@ -17,12 +17,12 @@ public class UI_Heroes : UI_Base
         Main_UI.instance.FadeInOut(true, true, null);
 
         // Resources 폴더에서 모든 캐릭터 데이터 로드
-        var Data = Resources.LoadAll<Character_Scriptable>("Scriptable");
+        var Datas = Base_Manager.Data.m_Data_Character;
         
         // 로드한 데이터로 딕셔너리 초기화
-        for(int i = 0; i < Data.Length; i++)
+        foreach(var data in Datas)
         {
-            m_Dictionries.Add(Data[i].m_CharacterName, Data[i]); // 캐릭터 이름을 키로 사용
+            m_Dictionries.Add(data.Value.Data.m_Character_Name, data.Value.Data); // 캐릭터 이름을 키로 사용
         }
 
         // 딕셔너리를 Rarity에 따라 정렬
