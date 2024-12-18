@@ -13,7 +13,14 @@ public class Render_Manager : MonoBehaviour
             instance = this;
         }
     }
+    public Camera cam;
 
     public Render_Hero HERO;
+
+
+    public Vector2 ReturnScreenPoint(Transform pos)
+    {
+        return cam.WorldToScreenPoint(pos.position);
+    }
   
 }
