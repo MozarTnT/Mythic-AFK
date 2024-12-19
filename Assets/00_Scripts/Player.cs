@@ -5,12 +5,14 @@ using UnityEditor.SceneManagement;
 
 public class Player : Character
 {
-    private Character_Scriptable CH_Data;
+    public Character_Scriptable CH_Data;
     public ParticleSystem Provocation_Effect;
     public GameObject TrailObject;
     public string CH_Name;
+    public int MP;
     Vector3 startPos;
     Quaternion rot;
+    public bool MainCharacter = false;
 
     protected override void Start()
     {
@@ -70,6 +72,15 @@ public class Player : Character
         Spawner.m_Players.Add(this);
     }
 
+    public void Get_MP(int mp)
+    {
+        if(MainCharacter) return;
+
+        Main_UI.instance.Character_State_Check(this);
+        MP += mp;
+
+    }
+
     private void Update()
     {
         if(isDead) return;
@@ -118,6 +129,7 @@ public class Player : Character
                     // 공격 범위 내에 있을 때 공격
                     isAttack = true;
                     AnimatorChange("isATTACK");
+                    Get_MP(5);
                     Invoke("InitAttack", 1.0f);
                 }
             }
@@ -151,6 +163,8 @@ public class Player : Character
         base.GetDamage(dmg);
 
         if(Stage_Manager.isDead) return;
+
+        Get_MP(3);
 
 
         var goObj = Base_Manager.Pool.Pooling_OBJ("HIT_TEXT").Get((value) =>

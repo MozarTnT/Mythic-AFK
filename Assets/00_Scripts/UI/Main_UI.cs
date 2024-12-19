@@ -31,7 +31,7 @@ public class Main_UI : MonoBehaviour
             m_Item_Coroutines.Add(null);
         }
 
-        Stage_Manager.m_ReadyEvent += () => FadeInOut(true);
+        Stage_Manager.m_ReadyEvent += OnReady;
         Stage_Manager.m_BossEvent += OnBoss;
         Stage_Manager.m_ClearEvent += OnClear;
         Stage_Manager.m_DeadEvent += OnDead;
@@ -83,6 +83,13 @@ public class Main_UI : MonoBehaviour
     [SerializeField] private Transform m_ItemContent;
     private List<TextMeshProUGUI> m_Item_Texts = new List<TextMeshProUGUI>();
     private List<Coroutine> m_Item_Coroutines = new List<Coroutine>();
+
+
+    [Space(20.0f)]
+    [Header("##Hero_Frame")]
+    [SerializeField] private UI_Main_Part[] m_Main_Parts;
+    Dictionary<Player, UI_Main_Part> m_Part = new Dictionary<Player, UI_Main_Part>();
+
 
     public void GetItem(Item_Scriptable item)
     {
@@ -192,6 +199,119 @@ public class Main_UI : MonoBehaviour
         float value = Boss ? 1.0f : 0f;
         Boss_Slider_Count(value, 1.0f);
       
+    }
+
+   
+
+    public void Set_Character_Data()
+    {
+        int indexValue = 0;
+        for(int i = 0; i < Base_Manager.Character.m_Set_Character.Length; i++)
+        {
+            var data = Base_Manager.Character.m_Set_Character[i];
+            if(data != null)
+            {
+                indexValue++;
+                m_Main_Parts[i].InitData(data.Data, true);
+                m_Main_Parts[i].transform.SetSiblingIndex(indexValue);
+            }
+        }
+
+    }
+
+    public void Character_State_Check(Player player)
+    {
+        // Dictionary에 키가 있는지 확인
+        if (m_Part.ContainsKey(player))
+        {
+            m_Part[player].StateCheck(player);
+        }
+        else
+        {
+            Debug.LogWarning($"Player {player.name}가 UI Dictionary에 없습니다.");
+            // Character_Spawner.players 배열에서 해당 플레이어를 찾아 Dictionary에 추가
+            for (int i = 0; i < Character_Spawner.players.Length; i++)
+            {
+                if (Character_Spawner.players[i] == player)
+                {
+                    m_Part.Add(player, m_Main_Parts[i]);
+                    m_Part[player].StateCheck(player);
+                    break;
+                }
+            }
+        }
+    }
+
+    public void Character_State_Check111(Player player)
+    {
+        m_Part[player].StateCheck(player);
+    }
+    
+    private void OnReady()
+    {
+        FadeInOut(true);
+        
+        m_Part.Clear();
+        
+        for(int i = 0; i < 6; i++)
+        {
+            m_Main_Parts[i].Initialize();
+        }
+
+        int indexValue = 0;
+
+        for(int i = 0; i < Base_Manager.Character.m_Set_Character.Length; i++)
+        {
+            var data = Base_Manager.Character.m_Set_Character[i];
+            if(data != null)
+            {
+                indexValue++;
+                m_Main_Parts[i].InitData(data.Data, false);
+                m_Main_Parts[i].transform.SetSiblingIndex(indexValue);
+                
+                if (i < Character_Spawner.players.Length && Character_Spawner.players[i] != null)
+                {
+                    if (!m_Part.ContainsKey(Character_Spawner.players[i]))
+                    {
+                        m_Part.Add(Character_Spawner.players[i], m_Main_Parts[i]);
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"Player at index {i} is not ready yet");
+                }
+            }
+        }
+    }
+
+    private void OnReady111()
+    {
+        FadeInOut(true);
+        
+        m_Part.Clear();
+        
+        for(int i = 0; i < 6; i ++)
+        {
+            m_Main_Parts[i].Initialize();
+        }
+
+        int indexValue = 0;
+
+        for(int i = 0; i < Base_Manager.Character.m_Set_Character.Length; i++)
+        {
+            var data = Base_Manager.Character.m_Set_Character[i];
+            if(data != null)
+            {
+                indexValue++;
+                m_Main_Parts[i].InitData(data.Data, false);
+                m_Main_Parts[i].transform.SetSiblingIndex(indexValue);
+                m_Part.Add(Character_Spawner.players[i], m_Main_Parts[i]);
+            }
+            else
+            {
+                Debug.Log("Player is null");
+            }
+        }
     }
 
     private void OnBoss()

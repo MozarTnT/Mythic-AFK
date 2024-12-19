@@ -862,9 +862,12 @@ MonoBehaviour:
   isDead: 0
   m_BulletTransform: {fileID: 0}
   Bullet_Name: 
+  CH_Data: {fileID: 0}
   Provocation_Effect: {fileID: 5633758398877450585}
   TrailObject: {fileID: 4711697155929268805}
   CH_Name: Barbarian
+  MP: 0
+  MainCharacter: 0
 --- !u!95 &5795486142074658460
 Animator:
   serializedVersion: 5

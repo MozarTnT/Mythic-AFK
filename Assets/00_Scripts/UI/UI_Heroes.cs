@@ -54,6 +54,8 @@ public class UI_Heroes : UI_Base
         {
             parts[i].Get_Character_Check();
         }
+
+        Main_UI.instance.Set_Character_Data();
     }
 
 

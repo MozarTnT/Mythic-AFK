@@ -907,9 +907,12 @@ MonoBehaviour:
   isDead: 0
   m_BulletTransform: {fileID: 0}
   Bullet_Name: 
+  CH_Data: {fileID: 0}
   Provocation_Effect: {fileID: 5633758398877450585, guid: 5a28f120aefe4e54e90c0634cd7b9d3c, type: 3}
   TrailObject: {fileID: 4711697155929268805, guid: 5a28f120aefe4e54e90c0634cd7b9d3c, type: 3}
   CH_Name: Elementalist_W
+  MP: 0
+  MainCharacter: 0
 --- !u!1 &6520207491823640421
 GameObject:
   m_ObjectHideFlags: 0
