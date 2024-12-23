@@ -50302,6 +50302,7 @@ MonoBehaviour:
   ATK: 0
   ATK_Speed: 0
   isDead: 0
+  isGetSkill: 0
   m_BulletTransform: {fileID: 74381893}
   Bullet_Name: CH_01
   CH_Data: {fileID: 0}

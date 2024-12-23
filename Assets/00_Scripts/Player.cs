@@ -75,10 +75,23 @@ public class Player : Character
 
     public void Get_MP(int mp)
     {
+        if(isGetSkill) return;
         if(MainCharacter) return;
 
         Main_UI.instance.Character_State_Check(this);
         MP += mp;
+
+        if(MP >= CH_Data.MaxMP)
+        {
+            MP = 0;
+            if(GetComponent<Skill_Base>() != null)
+            {
+                GetComponent<Skill_Base>().Set_Skill();
+            }
+            isGetSkill = true;
+        }
+
+
 
     }
 

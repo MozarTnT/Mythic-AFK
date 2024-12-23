@@ -15,6 +15,8 @@ public class Character : MonoBehaviour
     protected float Attack_Range = 3.0f;
     protected float Target_Range = 5.0f;
     protected bool isAttack = false;
+    public bool isGetSkill = false;
+
     protected Transform m_Target;
 
     [SerializeField] private Transform m_BulletTransform;
@@ -28,12 +30,14 @@ public class Character : MonoBehaviour
 
     protected void InitAttack() => isAttack = false;
 
-    protected void AnimatorChange(string temp) // 애니메이션 변환
+    public void AnimatorChange(string temp) // 애니메이션 변환
     {
+        if(isGetSkill) return;
+
         animator.SetBool("isIDLE", false);
         animator.SetBool("isMOVE", false);
 
-        if(temp == "isATTACK" || temp == "isCLEAR" || temp == "isDEAD")
+        if(temp == "isATTACK" || temp == "isCLEAR" || temp == "isDEAD" || temp == "isSKILL")
         {
             animator.SetTrigger(temp);
             return;
