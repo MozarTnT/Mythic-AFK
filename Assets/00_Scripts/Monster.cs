@@ -24,6 +24,7 @@ public class Monster : Character
         isDead = false;
         ATK = isBoss ? Utils.Data.stageData.ATK() * 10.0f : Utils.Data.stageData.ATK();
         HP = isBoss ? Utils.Data.stageData.HP() * 10.0f : Utils.Data.stageData.HP();
+        ATK_Speed = 1.0f;
 
         MaxHP = HP;
 

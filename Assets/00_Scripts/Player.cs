@@ -36,6 +36,7 @@ public class Player : Character
         CH_Data = data;
         Bullet_Name = CH_Data.m_Character_Name;
         Attack_Range = data.m_Attack_Range;
+        ATK_Speed = data.m_Attack_Speed;
 
         Set_ATKHP();
     }
@@ -60,7 +61,14 @@ public class Player : Character
     private void OnBoss()
     {
         AnimatorChange("isIDLE");
-        Provocation_Effect.Play();
+        if(Provocation_Effect != null)
+        {
+            Provocation_Effect.Play();
+        }
+        else
+        {
+            Debug.Log("Provocation_Effect is null");
+        }
     }
 
     private void OnClear()
@@ -77,8 +85,7 @@ public class Player : Character
     {
         if(isGetSkill) return;
         if(MainCharacter) return;
-
-        Main_UI.instance.Character_State_Check(this);
+        
         MP += mp;
 
         if(MP >= CH_Data.MaxMP)
@@ -91,8 +98,7 @@ public class Player : Character
             isGetSkill = true;
         }
 
-
-
+        Main_UI.instance.Character_State_Check(this);
     }
 
     private void Update()
@@ -144,7 +150,7 @@ public class Player : Character
                     isAttack = true;
                     AnimatorChange("isATTACK");
                     Get_MP(5);
-                    Invoke("InitAttack", 1.0f);
+                    Invoke("InitAttack", 1.0f / ATK_Speed);
                 }
             }
         }

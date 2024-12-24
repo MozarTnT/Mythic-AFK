@@ -16,6 +16,7 @@ public class Character : MonoBehaviour
     protected float Target_Range = 5.0f;
     protected bool isAttack = false;
     public bool isGetSkill = false;
+    public bool SkillNoneAttack = false;
 
     protected Transform m_Target;
 
@@ -32,17 +33,25 @@ public class Character : MonoBehaviour
 
     public void AnimatorChange(string temp) // 애니메이션 변환
     {
-        if(isGetSkill) return;
+        if(SkillNoneAttack)
+        {
+            if(isGetSkill) return;
+        } 
 
         animator.SetBool("isIDLE", false);
         animator.SetBool("isMOVE", false);
 
         if(temp == "isATTACK" || temp == "isCLEAR" || temp == "isDEAD" || temp == "isSKILL")
         {
+            if(temp == "isATTACK")
+            {
+                animator.speed = ATK_Speed;
+            }
             animator.SetTrigger(temp);
             return;
         }
 
+        animator.speed = 1.0f;
         animator.SetBool(temp, true);
     }
 
