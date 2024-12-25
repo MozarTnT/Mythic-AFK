@@ -87,6 +87,16 @@ public class Character : MonoBehaviour
         
     }
 
+    public virtual void Heal(double heal)
+    {
+        HP += heal;
+
+        var goObj = Base_Manager.Pool.Pooling_OBJ("HIT_TEXT").Get((value) =>
+        {
+            value.GetComponent<HIT_TEXT>().Init(transform.position, heal, Color.green, true);
+        });
+    }
+
 
     protected void FindClosestTarget<T>(T[] targets) where T : Component
     {

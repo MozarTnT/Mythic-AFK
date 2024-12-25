@@ -40,4 +40,24 @@ public class Skill_Base : MonoBehaviour
         m_Player.AnimatorChange("isIDLE");
     }
 
+    public Character HP_Check() // 가장 낮은 체력 캐릭터 추적
+    {
+        Character player = null;
+        double hpCount = Mathf.Infinity;
+
+        for(int i = 0; i < players.Length; i ++)
+        {
+            double hp = players[i].HP;
+
+            if(hp < hpCount)
+            {
+                hpCount = hp;
+                player = players[i];
+            }
+
+        }
+        return player;
+
+    }
+
 }

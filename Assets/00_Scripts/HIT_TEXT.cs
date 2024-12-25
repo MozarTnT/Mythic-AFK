@@ -18,7 +18,7 @@ public class HIT_TEXT : MonoBehaviour
         cam = Camera.main;
     }
 
-    public void Init(Vector3 pos, double dmg, bool Monster = false, bool Critical = false)
+    public void Init(Vector3 pos, double dmg, Color color, bool Monster = false, bool Critical = false)
     {
         // 타겟 위치를 랜덤하게 조정
         pos.x += Random.Range(-0.1f, 0.1f);
@@ -26,16 +26,8 @@ public class HIT_TEXT : MonoBehaviour
 
         target = pos; // 타겟 위치 설정
         m_Text.text = StringMethod.ToCurrencyString(dmg); // 데미지 텍스트 설정
-
-        if(Monster)
-        {
-            m_Text.color = Color.red;
-        }
-        else
-        {
-            m_Text.color = Color.white;
-        }
-
+        
+        m_Text.color = color;
 
         transform.parent = Base_Canvas.instance.HOLDER_LAYER(1); // UI 캔버스의 특정 레이어에 자식으로 설정
 

@@ -31,6 +31,7 @@ public class Player : Character
         rot = transform.rotation;
     }
 
+
     private void Data_Set(Character_Scriptable data)
     {
         CH_Data = data;
@@ -91,7 +92,7 @@ public class Player : Character
         if(MP >= CH_Data.MaxMP)
         {
             MP = 0;
-            if(GetComponent<Skill_Base>() != null)
+            if (GetComponent<Skill_Base>() != null)
             {
                 GetComponent<Skill_Base>().Set_Skill();
             }
@@ -189,7 +190,7 @@ public class Player : Character
 
         var goObj = Base_Manager.Pool.Pooling_OBJ("HIT_TEXT").Get((value) =>
         {
-            value.GetComponent<HIT_TEXT>().Init(transform.position, dmg, true);
+            value.GetComponent<HIT_TEXT>().Init(transform.position, dmg, Color.red, true);
         });
 
         HP -= dmg;
