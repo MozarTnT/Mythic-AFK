@@ -56,6 +56,7 @@ public class Item_OBJ : MonoBehaviour
         m_Loot.Play();
 
         Main_UI.instance.GetItem(m_Item);
+        Base_Manager.Inventory.GetItem(m_Item);
 
         yield return new WaitForSeconds(0.5f);
 

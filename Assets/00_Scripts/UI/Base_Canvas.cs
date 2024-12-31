@@ -24,11 +24,12 @@ public class Base_Canvas : MonoBehaviour
     private void Start()
     {
         HERO_BUTTON.onClick.AddListener(() => GetUI("#Heros", true));
+        INVENTORY_BUTTON.onClick.AddListener(() => GetUI("#Inventory"));
     }
    
     public Transform COIN; // 코인 오브젝트
     [SerializeField] private Transform LAYER; // 레이어 설정
-    [SerializeField] private Button HERO_BUTTON;
+    [SerializeField] private Button HERO_BUTTON, INVENTORY_BUTTON;
 
 
     private void Update()
