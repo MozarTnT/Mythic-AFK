@@ -30,6 +30,7 @@ public class Base_Canvas : MonoBehaviour
     public Transform COIN; // 코인 오브젝트
     [SerializeField] private Transform LAYER; // 레이어 설정
     [SerializeField] private Button HERO_BUTTON, INVENTORY_BUTTON;
+    public PopUp_UI popup = null;
 
 
     private void Update()
@@ -66,5 +67,16 @@ public class Base_Canvas : MonoBehaviour
     {
         var go = Instantiate(Resources.Load<UI_Base>("UI/" + temp), transform);
         Utils.UI_Holder.Push(go);
+    }
+
+    public PopUp_UI PopUPItem()
+    {
+        if(popup != null)
+        {
+            Destroy(popup.gameObject);
+        }
+        popup = Instantiate(Resources.Load<PopUp_UI>("UI/PopUp_Item"), transform);
+
+        return popup;
     }
 }
