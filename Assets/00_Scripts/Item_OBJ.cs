@@ -58,6 +58,11 @@ public class Item_OBJ : MonoBehaviour
         Main_UI.instance.GetItem(m_Item);
         Base_Manager.Inventory.GetItem(m_Item);
 
+        if(Base_Canvas.isSave)
+        {
+            Base_Canvas.instance.m_UI.GetComponent<UI_SavingMode>().GetItem(m_Item);
+        }
+
         yield return new WaitForSeconds(0.5f);
 
         Base_Manager.Pool.m_pool_Dictionary["Item_OBJ"].Return(this.gameObject);
