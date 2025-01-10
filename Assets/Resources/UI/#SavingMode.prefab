@@ -1758,6 +1758,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6385934651694626690}
+  - component: {fileID: 1526274306833169880}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -1784,6 +1785,30 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &1526274306833169880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8318999705249112430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 70
+    m_Right: 50
+    m_Top: 50
+    m_Bottom: 50
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 180, y: 180}
+  m_Spacing: {x: 15, y: 15}
+  m_Constraint: 1
+  m_ConstraintCount: 5
 --- !u!1 &9051681565399200601
 GameObject:
   m_ObjectHideFlags: 0
@@ -1838,5 +1863,6 @@ MonoBehaviour:
   FightText: {fileID: 8788927344591811861}
   StageText: {fileID: 8921253173109478533}
   BatteryFill: {fileID: 762590924014094539}
+  LandImage: {fileID: 1554862612930902482}
   Content: {fileID: 6385934651694626690}
   item_Part: {fileID: 3317695424772054786, guid: 8cc9924512cf97b44b277e33d5617275, type: 3}

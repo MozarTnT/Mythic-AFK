@@ -20,6 +20,8 @@ public class HIT_TEXT : MonoBehaviour
 
     public void Init(Vector3 pos, double dmg, Color color, bool Monster = false, bool Critical = false)
     {
+        UI_SavingMode.m_OnSaving += OnSave;
+
         // 타겟 위치를 랜덤하게 조정
         pos.x += Random.Range(-0.1f, 0.1f);
         pos.z += Random.Range(-0.1f, 0.1f);
@@ -37,8 +39,20 @@ public class HIT_TEXT : MonoBehaviour
         Base_Manager.instance.Return_Pool(2.0f, this.gameObject, "HIT_TEXT");
     }
 
+    private void OnSave()
+    {
+        ReturnText();
+    }
+
+    private void OnDisable()
+    {
+        UI_SavingMode.m_OnSaving -= OnSave;
+    }
+
     private void Update()
     {
+        if(Base_Canvas.isSave) return;
+
         // 타겟 위치에 따라 오브젝트 위치 업데이트
         Vector3 targetPos = new Vector3(target.x, target.y + UpRange, target.z);
         transform.position = cam.WorldToScreenPoint(targetPos); // 월드 좌표를 스크린 좌표로 변환

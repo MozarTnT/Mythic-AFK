@@ -21,8 +21,23 @@ public class Item_OBJ : MonoBehaviour
     private void Update()
     {
         if(isCheck == false) return;
+        if(Base_Canvas.isSave) return;
 
         ItemTextRect.position = Camera.main.WorldToScreenPoint(transform.position);
+    }
+
+    private void OnSave()
+    {
+        Main_UI.instance.GetItem(m_Item);
+        Base_Manager.Inventory.GetItem(m_Item);
+        ItemTextRect.gameObject.SetActive(false);
+
+        if(Base_Canvas.isSave)
+        {
+            Base_Canvas.instance.m_UI.GetComponent<UI_SavingMode>().GetItem(m_Item);
+        }
+
+        Base_Manager.Pool.m_pool_Dictionary["Item_OBJ"].Return(this.gameObject);
     }
 
     void RarityCheck()
@@ -73,10 +88,17 @@ public class Item_OBJ : MonoBehaviour
         m_Item = data;
         rarity = m_Item.rarity;
 
+        UI_SavingMode.m_OnSaving += OnSave;
+
         isCheck = false;
         transform.position = pos;
         Vector3 target_Pos = new Vector3(pos.x + (Random.insideUnitSphere.x * 2.0f), 0.5f, pos.z + (Random.insideUnitSphere.z * 2.0f));
         StartCoroutine(SimulateProjectile(target_Pos));
+    }
+
+    public void OnDisable()
+    {
+        UI_SavingMode.m_OnSaving -= OnSave;
     }
 
 

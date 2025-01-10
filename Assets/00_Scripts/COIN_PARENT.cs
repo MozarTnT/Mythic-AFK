@@ -19,10 +19,29 @@ public class COIN_PARENT : MonoBehaviour
         {
             childs[i] = transform.GetChild(i).GetComponent<RectTransform>();
         }
+
+    }
+
+    private void OnSave()
+    {
+        Base_Manager.Data.Money += Utils.Data.stageData.MONEY();
+        if(Distance_Boolean_World(0.5f))
+        {
+            Base_Manager.Pool.m_pool_Dictionary["COIN_PARENT"].Return(this.gameObject); // 풀에 오브젝트 반환
+        }
+    }
+
+    private void OnDisable()
+    {
+        UI_SavingMode.m_OnSaving -= OnSave;
     }
 
     public void Init(Vector3 pos)
     {
+        UI_SavingMode.m_OnSaving += OnSave;
+
+        if(Base_Canvas.isSave) return;
+
         // 초기 위치 설정
         target = pos;
         transform.position = cam.WorldToScreenPoint(pos); // 월드 좌표를 스크린 좌표로 변환
