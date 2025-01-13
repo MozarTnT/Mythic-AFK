@@ -24,6 +24,8 @@ public class Base_Manager : MonoBehaviour
 
     #endregion
 
+    public static bool isFast = false;
+
     private void Awake()
     {
         Initialize();

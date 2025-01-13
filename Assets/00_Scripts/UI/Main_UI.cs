@@ -25,6 +25,9 @@ public class Main_UI : MonoBehaviour
         TextCheck();
         Monster_Slider_Count();
 
+        Base_Manager.isFast = PlayerPrefs.GetInt("FAST") == 1 ? true : false; // 앞서 저장된 배속 상태 가져오기
+        TimeCheck();
+
         for(int i = 0; i < m_ItemContent.childCount; i++)
         { 
             m_Item_Texts.Add(m_ItemContent.GetChild(i).GetComponent<TextMeshProUGUI>());
@@ -90,6 +93,27 @@ public class Main_UI : MonoBehaviour
     [SerializeField] private UI_Main_Part[] m_Main_Parts;
     public Image Main_Character_Skill_Fill;    
     Dictionary<Player, UI_Main_Part> m_Part = new Dictionary<Player, UI_Main_Part>();
+
+
+    [Header("## ADS")]
+    [SerializeField] private Image Fast_Lock;
+    [SerializeField] private GameObject Fast_Fade;
+
+    private void TimeCheck() // 게임 속도 조정 (1.0f : 1초, 1.5f : 0.5초 -> 1.5배로 줄어들어서 빠르게 진행)
+    {
+        Time.timeScale = Base_Manager.isFast ? 1.5f : 1.0f;
+        Fast_Lock.gameObject.SetActive(!Base_Manager.isFast);
+        Fast_Fade.SetActive(Base_Manager.isFast);
+    }
+    public void GetFast()
+    {
+        bool fast = !Base_Manager.isFast;
+        Base_Manager.isFast = fast;
+
+        PlayerPrefs.SetInt("FAST", fast == true ? 1 : 0); // 배속 상태 저장
+
+        TimeCheck();
+    }
 
 
     public void GetItem(Item_Scriptable item)
@@ -166,7 +190,7 @@ public class Main_UI : MonoBehaviour
 
     IEnumerator Item_Text_FadeOut(RectTransform rect)
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(2.0f); // 추후 TimeScale 영향 받지 않게 해야함, WaitForSecondsRealtime(2.0f)
         rect.gameObject.SetActive(false);
         rect.anchoredPosition = new Vector2(0.0f, 0.0f);
     }
@@ -488,7 +512,7 @@ public class Main_UI : MonoBehaviour
 
     IEnumerator Legendary_PopUP_Coroutine()
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSecondsRealtime(2.0f);
         isPopUP = false;
         m_Legendary_PopUP.SetTrigger("Close");
     }
