@@ -27,6 +27,7 @@ public class Main_UI : MonoBehaviour
 
         Base_Manager.isFast = PlayerPrefs.GetInt("FAST") == 1 ? true : false; // 앞서 저장된 배속 상태 가져오기
         TimeCheck();
+        BuffCheck();
 
         for(int i = 0; i < m_ItemContent.childCount; i++)
         { 
@@ -98,7 +99,22 @@ public class Main_UI : MonoBehaviour
     [Header("## ADS")]
     [SerializeField] private Image Fast_Lock;
     [SerializeField] private GameObject Fast_Fade;
+    [SerializeField] private GameObject[] Buffs_Lock;
 
+    public void BuffCheck()
+    {
+        for(int i = 0; i < Base_Manager.Data.Buff_Timers.Length; i++)
+        {
+            if(Base_Manager.Data.Buff_Timers[i] > 0.0f)
+            {
+                Buffs_Lock[i].SetActive(false);
+            }
+            else
+            {
+                Buffs_Lock[i].SetActive(true);
+            }
+        }
+    }
     private void TimeCheck() // 게임 속도 조정 (1.0f : 1초, 1.5f : 0.5초 -> 1.5배로 줄어들어서 빠르게 진행)
     {
         Time.timeScale = Base_Manager.isFast ? 1.5f : 1.0f;

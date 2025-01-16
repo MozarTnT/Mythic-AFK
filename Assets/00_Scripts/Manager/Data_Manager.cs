@@ -18,6 +18,8 @@ public class Data_Manager
     public int Level;
     public double EXP;
     public int Stage;
+    public float[] Buff_Timers = {0.0f, 0.0f, 0.0f};
+    public int BuffLevel, BuffCount;
     public Dictionary<string, Character_Holder> m_Data_Character = new Dictionary<string, Character_Holder>(); // 플레이어가 가지고 있는 캐릭터 저장용
 
     public void Init()

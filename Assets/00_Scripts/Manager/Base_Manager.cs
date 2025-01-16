@@ -30,7 +30,16 @@ public class Base_Manager : MonoBehaviour
     {
         Initialize();
     }
-
+    private void Update()
+    {
+        for(int i = 0; i < Data.Buff_Timers.Length; i++)
+        {
+            if(Data.Buff_Timers[i] >= 0.0f)
+            {
+                Data.Buff_Timers[i] -= Time.unscaledDeltaTime;
+            }
+        }
+    }
     private void Initialize()
     {
         if (instance == null)

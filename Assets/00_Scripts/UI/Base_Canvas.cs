@@ -26,13 +26,14 @@ public class Base_Canvas : MonoBehaviour
         HERO_BUTTON.onClick.AddListener(() => GetUI("#Heros", true));
         INVENTORY_BUTTON.onClick.AddListener(() => GetUI("#Inventory"));
         SAVINGMODE_BUTTON.onClick.AddListener(() => {GetUI("#SavingMode"); isSave = true;});
+        ADSBUFF_BUTTON.onClick.AddListener(() => GetUI("#ADS_Buff"));
     }
    
     public Transform COIN; // 코인 오브젝트
     [SerializeField] private Transform LAYER; // 레이어 설정
-    [SerializeField] private Button HERO_BUTTON, INVENTORY_BUTTON, SAVINGMODE_BUTTON;
-    public PopUp_UI popup = null;
-    public UI_Base m_UI;
+    [SerializeField] private Button HERO_BUTTON, INVENTORY_BUTTON, SAVINGMODE_BUTTON, ADSBUFF_BUTTON;
+    [HideInInspector] public PopUp_UI popup = null;
+    [HideInInspector] public UI_Base m_UI;
     public static bool isSave = false;
 
 
