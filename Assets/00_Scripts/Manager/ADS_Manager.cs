@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
+using System;
 
 public class ADS_Manager 
 {
     private bool TestMode = true;
-    public readonly string banner_Android_ID = "ca-app-pub-8778606611149783/2018576135";
-    public readonly string interstitial_Android_ID = "ca-app-pub-8778606611149783/2321828462";
+    //public readonly string banner_Android_ID = "ca-app-pub-8778606611149783/2018576135";
+    //public readonly string interstitial_Android_ID = "ca-app-pub-8778606611149783/2321828462";
     public readonly string reward_Android_ID = "ca-app-pub-8778606611149783/4756420114";
 
 
-    public readonly string banner_Android_sample = "ca-app-pub-3940256099942544/6300978111";
-    public readonly string interstitial_Android_sample = "ca-app-pub-3940256099942544/1033173712";
+    //public readonly string banner_Android_sample = "ca-app-pub-3940256099942544/6300978111";
+    //public readonly string interstitial_Android_sample = "ca-app-pub-3940256099942544/1033173712";
     public readonly string reward_Android_sample = "ca-app-pub-3940256099942544/5224354917";
 
 
@@ -20,6 +21,7 @@ public class ADS_Manager
     InterstitialAd _interstitialAD; // 전면 광고
     RewardedAd _rewardedAD; // 보상형 광고
     AdRequest _adRequest;
+    Action _rewardedCallBack;
 
 
     public void Init()
@@ -30,28 +32,89 @@ public class ADS_Manager
 
     private void PrepareADS()
     {
-        string banner;
-        string interstitial;
         string reward;
 
         if(TestMode)
         {
-            banner = banner_Android_sample;
-            interstitial = interstitial_Android_sample;
             reward = reward_Android_sample;
         }
         else
         {
-            banner = banner_Android_ID;
-            interstitial = interstitial_Android_ID;
+
             reward = reward_Android_ID;
         }
 
         _adRequest = new AdRequest();
         _adRequest.Keywords.Add("unity-admob-sample");
 
-        BannerView(banner);
+        RewardedAd.Load(reward, _adRequest, OnAdRewardCallBack);
     }
+
+    private void OnAdRewardCallBack(RewardedAd ad, LoadAdError error)
+    {
+        if(error != null || ad == null)
+        {
+            Debug.LogError("보상형 광고 준비 실패 : " + error);
+            return;
+        }
+        
+        Debug.Log("보상형 광고 준비 성공" + ad.GetResponseInfo());
+        _rewardedAD = ad;
+        RegisterEventHandlers(_rewardedAD);
+        
+    }
+
+    private void RegisterEventHandlers(RewardedAd ad) // 광고 세팅
+    {
+        ad.OnAdFullScreenContentClosed += () => 
+        {
+            Debug.Log("보상형 광고 닫힘");
+            PrepareADS();
+        };
+
+        ad.OnAdFullScreenContentFailed += (AdError error) =>
+        {
+            Debug.LogError("보상형 광고 실패 : " + error);
+            PrepareADS();
+        };
+
+        ad.OnAdPaid += (AdValue adValue) => 
+        {
+            if(_rewardedCallBack != null)
+            {
+                _rewardedCallBack?.Invoke();
+                _rewardedCallBack = null;
+            }
+        };
+    }
+
+    public void ShowRewardedAds(Action rewardCallBack)
+    {
+        _rewardedCallBack = rewardCallBack;
+        if(_rewardedAD != null && _rewardedAD.CanShowAd())
+        {
+            _rewardedAD.Show((Reward reward) =>
+            {
+                if(_rewardedCallBack != null)
+                {
+                    Debug.Log(reward.Type + " : " + reward.Amount);
+
+                    if(_rewardedCallBack != null) // 보상 오류 있는 경우 일단 지급 판정
+                    {
+                        _rewardedCallBack?.Invoke();
+                        _rewardedCallBack = null;
+                    }
+                }
+            });
+        }
+        else 
+        {
+            Debug.Log("준비된 광고가 없음"); // 추후 팝업창 여기 구현
+            PrepareADS();
+        }
+    }
+
+
 
     public void BannerView(string banner_id)
     {
@@ -66,8 +129,8 @@ public class ADS_Manager
         _banner = new BannerView(banner_id, adaptiveSize, AdPosition.Bottom);
 
         _banner.LoadAd(_adRequest);
-
     }
 
    
 }
+

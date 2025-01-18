@@ -63,6 +63,7 @@ public class Base_Manager : MonoBehaviour
         }
     }
 
+
     public GameObject Instantiate_Path(string path)
     {
         return Instantiate(Resources.Load<GameObject>(path));
