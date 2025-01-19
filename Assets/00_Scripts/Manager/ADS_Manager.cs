@@ -99,7 +99,7 @@ public class ADS_Manager
                 {
                     Debug.Log(reward.Type + " : " + reward.Amount);
 
-                    if(_rewardedCallBack != null) // 보상 오류 있는 경우 일단 지급 판정
+                    if(_rewardedCallBack != null) // 보상 오류 있는 경우 일단 지급 판정 -> 출시 후에 빌드 테스트시 제거하기
                     {
                         _rewardedCallBack?.Invoke();
                         _rewardedCallBack = null;

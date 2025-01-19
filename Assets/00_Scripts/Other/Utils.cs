@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,6 +38,14 @@ public class Utils
         }
 
         return "<color=#FFFFFF>";
+    }
+
+    public static string GetTimer(float time)
+    {
+        TimeSpan timespan = TimeSpan.FromSeconds(time);
+        string timer = string.Format("{0:00}:{1:00}", timespan.Minutes, timespan.Seconds);
+
+        return timer;
     }
 
     // 지수 증가 공식 -> 값을 일정 비율로 지속적 증가시킴

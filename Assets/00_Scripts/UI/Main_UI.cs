@@ -10,37 +10,7 @@ public class Main_UI : MonoBehaviour
 {
     public static Main_UI instance = null;
 
-
-    private void Awake()
-    {
-        if(instance == null)
-        {
-            instance = this;
-        }
-
-    }
-
-    private void Start()
-    {
-        TextCheck();
-        Monster_Slider_Count();
-
-        Base_Manager.isFast = PlayerPrefs.GetInt("FAST") == 1 ? true : false; // 앞서 저장된 배속 상태 가져오기
-        TimeCheck();
-        BuffCheck();
-
-        for(int i = 0; i < m_ItemContent.childCount; i++)
-        { 
-            m_Item_Texts.Add(m_ItemContent.GetChild(i).GetComponent<TextMeshProUGUI>());
-            m_Item_Coroutines.Add(null);
-        }
-
-        Stage_Manager.m_ReadyEvent += OnReady;
-        Stage_Manager.m_BossEvent += OnBoss;
-        Stage_Manager.m_ClearEvent += OnClear;
-        Stage_Manager.m_DeadEvent += OnDead;
-    }
-
+    #region Parameter
     [Header("##Default")]
     [SerializeField] private TextMeshProUGUI m_Level_Text;
     [SerializeField] private TextMeshProUGUI m_ALLATK_Text;
@@ -100,6 +70,50 @@ public class Main_UI : MonoBehaviour
     [SerializeField] private Image Fast_Lock;
     [SerializeField] private GameObject Fast_Fade;
     [SerializeField] private GameObject[] Buffs_Lock;
+    [SerializeField] private Image x2Fill;
+    [SerializeField] private TextMeshProUGUI x2Text;
+    #endregion
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+
+    }
+
+    private void Start()
+    {
+        TextCheck();
+        Monster_Slider_Count();
+
+        Base_Manager.isFast = PlayerPrefs.GetInt("FAST") == 1 ? true : false; // 앞서 저장된 배속 상태 가져오기
+        TimeCheck();
+        BuffCheck();
+
+        for(int i = 0; i < m_ItemContent.childCount; i++)
+        { 
+            m_Item_Texts.Add(m_ItemContent.GetChild(i).GetComponent<TextMeshProUGUI>());
+            m_Item_Coroutines.Add(null);
+        }
+
+        Stage_Manager.m_ReadyEvent += OnReady;
+        Stage_Manager.m_BossEvent += OnBoss;
+        Stage_Manager.m_ClearEvent += OnClear;
+        Stage_Manager.m_DeadEvent += OnDead;
+    }
+
+    private void Update()
+    {
+        if(Base_Manager.Data.Buff_x2 > 0.0f)
+        {
+            x2Fill.fillAmount = Base_Manager.Data.Buff_x2 / 1800.0f;
+            x2Text.text = Utils.GetTimer(Base_Manager.Data.Buff_x2);
+        }
+    }
+
+   
 
     public void BuffCheck()
     {
@@ -114,6 +128,14 @@ public class Main_UI : MonoBehaviour
                 Buffs_Lock[i].SetActive(true);
             }
         }
+        if(Base_Manager.Data.Buff_x2 > 0.0f)
+        {
+            x2Fill.transform.parent.gameObject.SetActive(true);
+        }
+        else
+        {
+            x2Fill.transform.parent.gameObject.SetActive(false);
+        }
     }
     private void TimeCheck() // 게임 속도 조정 (1.0f : 1초, 1.5f : 0.5초 -> 1.5배로 줄어들어서 빠르게 진행)
     {
@@ -124,11 +146,26 @@ public class Main_UI : MonoBehaviour
     public void GetFast()
     {
         bool fast = !Base_Manager.isFast;
-        Base_Manager.isFast = fast;
+        if(fast == true)
+        {
+            if(Base_Manager.Data.Buff_x2 <= 0.0f)
+            {
+                Base_Manager.ADS.ShowRewardedAds(() => 
+                {
+                    Base_Manager.Data.Buff_x2 = 1800.0f;
+                    BuffCheck();
+                    TimeCheck();
+                });
+            }
 
+        }
+
+        Base_Manager.isFast = fast;
         PlayerPrefs.SetInt("FAST", fast == true ? 1 : 0); // 배속 상태 저장
 
+        BuffCheck();
         TimeCheck();
+
     }
 
 

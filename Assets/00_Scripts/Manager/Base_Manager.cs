@@ -41,6 +41,8 @@ public class Base_Manager : MonoBehaviour
                 Data.Buff_Timers[i] -= Time.unscaledDeltaTime;
             }
         }
+        if(Data.Buff_x2 > 0.0f) Data.Buff_x2 -= Time.unscaledDeltaTime;
+        
     }
     private void Initialize()
     {

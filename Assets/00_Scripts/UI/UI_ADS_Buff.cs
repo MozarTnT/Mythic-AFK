@@ -38,24 +38,26 @@ public class UI_ADS_Buff : UI_Base
             if(Base_Manager.Data.Buff_Timers[i] >= 0.0f)
             {
                 m_Buttons_Fill[i].fillAmount = 1 - (Base_Manager.Data.Buff_Timers[i] / 1800.0f);
-                TimeSpan timespan = TimeSpan.FromSeconds(Base_Manager.Data.Buff_Timers[i]);
-                string timer = string.Format("{0:00}:{1:00}", timespan.Minutes, timespan.Seconds);
-                m_Timer_Texts[i].text = timer;
+               
+                m_Timer_Texts[i].text = Utils.GetTimer(Base_Manager.Data.Buff_Timers[i]);
             }
         }
     }
 
 
-    public void GetBuff(ADS_Buff_State m_State)
+    public void GetBuff(ADS_Buff_State m_State) // 추후 인앱 결제시 reward callback Invoke 순서 변경 필요
     {
-        int stateValue = (int)m_State;
+        Base_Manager.ADS.ShowRewardedAds(() => 
+        {
+            int stateValue = (int)m_State;
 
-        Base_Manager.Data.BuffCount++;
+            Base_Manager.Data.BuffCount++;
 
-        Base_Manager.Data.Buff_Timers[stateValue] = 1800.0f;
-        Main_UI.instance.BuffCheck();
+            Base_Manager.Data.Buff_Timers[stateValue] = 1800.0f;
+            Main_UI.instance.BuffCheck();
 
-        SetBuff(stateValue, true);
+            SetBuff(stateValue, true);
+        });
     }
 
     void SetBuff(int value,bool GetBool)
