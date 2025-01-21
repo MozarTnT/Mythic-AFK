@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "859296190776",
+    "project_id": "mythicafk-6b36a",
+    "storage_bucket": "mythicafk-6b36a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:859296190776:android:937c0e4e24ab8bc6f071cd",
+        "android_client_info": {
+          "package_name": "com.MozarTnT.MythicAFK"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8ZxWlVoj3xg4LPrUk40WRcdWW8033dm0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

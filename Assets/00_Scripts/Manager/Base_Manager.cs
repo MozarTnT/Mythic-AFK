@@ -16,6 +16,7 @@ public class Base_Manager : MonoBehaviour
     private static Inventory_Manager s_Inventory = new Inventory_Manager();
     private static Character_Manager s_Character = new Character_Manager();
     private static ADS_Manager s_ADS = new ADS_Manager();
+    private static Firebase_Manager s_Firebase = new Firebase_Manager();
     public static Pool_Manager Pool { get { return s_Pool; } }
     public static Player_Manager Player { get { return s_Player; } }
     public static Data_Manager Data { get { return s_Data; } }
@@ -23,6 +24,8 @@ public class Base_Manager : MonoBehaviour
     public static Inventory_Manager Inventory { get { return s_Inventory; } }
     public static Character_Manager Character { get { return s_Character; } }
     public static ADS_Manager ADS { get { return s_ADS; } }
+    public static Firebase_Manager Firebase { get { return s_Firebase; } }
+
 
     #endregion
 
@@ -55,6 +58,7 @@ public class Base_Manager : MonoBehaviour
             ADS.Init();
             Data.Init();
             Item.Init();    
+            Firebase.Init();
 
             StartCoroutine(Action_Coroutine(() => Stage_Manager.State_Change(Stage_State.Ready), 0.3f));
             DontDestroyOnLoad(this.gameObject);
