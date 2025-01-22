@@ -7,7 +7,7 @@ public partial class Firebase_Manager
 {
     private FirebaseAuth auth;
     private FirebaseUser currentUser;
-    private DatabaseReference reference;
+    public DatabaseReference reference;
     public void Init()
     {
         // 파이어베이스 초기화

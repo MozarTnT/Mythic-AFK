@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Base_Manager : MonoBehaviour
 {
     public static Base_Manager instance = null; // 싱글톤화
@@ -43,7 +44,16 @@ public class Base_Manager : MonoBehaviour
         if(Save_Timer >= 10.0f) // 10초마다 FireBase에 값 저장
         {
             Save_Timer = 0.0f;
-            Firebase.WriteData();
+            
+            // Firebase가 초기화되었는지 확인
+            if (Firebase != null && Firebase.reference != null)  // reference로 체크
+            {
+                Firebase.WriteData();
+            }
+            else
+            {
+                Debug.LogWarning("Firebase is not ready yet");
+            }
         }
 
         for(int i = 0; i < Data.Buff_Timers.Length; i++)
@@ -66,7 +76,7 @@ public class Base_Manager : MonoBehaviour
 
             ADS.Init();
             Data.Init();
-            Item.Init();    
+            Item.Init();
             Firebase.Init();
 
             StartCoroutine(Action_Coroutine(() => Stage_Manager.State_Change(Stage_State.Ready), 0.3f));
@@ -107,7 +117,15 @@ public class Base_Manager : MonoBehaviour
 
     private void OnDestroy() // 게임 종료시 데이터 저장용
     {
-        Firebase.WriteData();
+        // Firebase와 reference가 모두 null이 아닌지 확인
+        if (Firebase != null && Firebase.reference != null)
+        {
+            Firebase.WriteData();
+        }
+        else
+        {
+            Debug.LogWarning("Firebase is not ready for final save");
+        }
     }
 
 }

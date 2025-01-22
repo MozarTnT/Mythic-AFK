@@ -8,6 +8,7 @@ public partial class Firebase_Manager
         if(auth.CurrentUser != null)
         {
             Debug.Log("이미 로그인 상태입니다. : " + auth.CurrentUser.UserId);
+            ReadData();
             return;
         }
 
@@ -22,6 +23,7 @@ public partial class Firebase_Manager
             FirebaseUser user = task.Result.User;
             // Unique ID
             Debug.Log("게스트 로그인 성공! 사용자 ID : " + user.UserId);
+            ReadData();
 
         });
     }
