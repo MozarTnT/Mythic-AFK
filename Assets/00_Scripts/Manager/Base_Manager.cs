@@ -31,12 +31,21 @@ public class Base_Manager : MonoBehaviour
 
     public static bool isFast = false;
 
+    float Save_Timer = 0.0f;
+
     private void Awake()
     {
         Initialize();
     }
     private void Update()
     {
+        Save_Timer += Time.unscaledDeltaTime;
+        if(Save_Timer >= 10.0f) // 10초마다 FireBase에 값 저장
+        {
+            Save_Timer = 0.0f;
+            Firebase.WriteData();
+        }
+
         for(int i = 0; i < Data.Buff_Timers.Length; i++)
         {
             if(Data.Buff_Timers[i] >= 0.0f)
@@ -94,6 +103,11 @@ public class Base_Manager : MonoBehaviour
     {
         yield return new WaitForSeconds(timer);
         action?.Invoke();
+    }
+
+    private void OnDestroy() // 게임 종료시 데이터 저장용
+    {
+        Firebase.WriteData();
     }
 
 }

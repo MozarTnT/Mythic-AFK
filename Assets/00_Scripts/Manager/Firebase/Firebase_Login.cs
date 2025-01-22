@@ -1,7 +1,7 @@
 using Firebase.Auth;
 using UnityEngine;
 
-public partial class Firebase_Manager : MonoBehaviour
+public partial class Firebase_Manager
 {
     public void GuestLogin() // 게스트 로그인
     {
