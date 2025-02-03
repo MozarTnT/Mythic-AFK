@@ -16,7 +16,7 @@ public partial class Firebase_Manager
         {
             if(task.IsCanceled || task.IsFaulted)
             {
-                Debug.LogError("게스트 로그인 실패: " + task.Exception);
+                Debug.Log("게스트 로그인 실패: " + task.Exception);
                 return;
             }
             

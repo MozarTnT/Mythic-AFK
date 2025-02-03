@@ -44,6 +44,8 @@ public partial class Firebase_Manager
                 User user = JsonUtility.FromJson<User>(snapshot.GetRawJsonValue());
                 Debug.Log("사용자 이름 : " + user.userName);
                 Debug.Log("스테이지 : " + user.Stage);
+
+                LoadingScene.instance.LoadingMain();
             }
             else
             {

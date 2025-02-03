@@ -24,7 +24,7 @@ public partial class Firebase_Manager
             }
             else
             {
-                Debug.LogError("Firebase 초기화 실패: " + task.Exception.ToString());
+                Debug.Log("Firebase 초기화 실패: " + task.Exception.ToString());
             }
         });
     }
