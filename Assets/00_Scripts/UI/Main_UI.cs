@@ -102,6 +102,8 @@ public class Main_UI : MonoBehaviour
         Stage_Manager.m_BossEvent += OnBoss;
         Stage_Manager.m_ClearEvent += OnClear;
         Stage_Manager.m_DeadEvent += OnDead;
+
+        Stage_Manager.State_Change(Stage_State.Ready);
     }
 
     private void Update()

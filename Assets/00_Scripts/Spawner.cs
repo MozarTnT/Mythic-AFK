@@ -17,9 +17,14 @@ public class Spawner : MonoBehaviour
 
     Coroutine coroutine;
 
-    private void Start()
+    private void Awake()
     {
         Stage_Manager.m_ReadyEvent += OnReady;
+       
+    }
+
+    private void Start()
+    {
         Stage_Manager.m_PlayEvent += OnPlay;
         Stage_Manager.m_BossEvent += OnBoss;
     }
