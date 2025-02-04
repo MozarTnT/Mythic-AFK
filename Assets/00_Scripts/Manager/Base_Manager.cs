@@ -31,6 +31,8 @@ public class Base_Manager : MonoBehaviour
     #endregion
 
     public static bool isFast = false;
+    public static bool GetGameStart = false;
+
 
     float Save_Timer = 0.0f;
 
@@ -40,6 +42,8 @@ public class Base_Manager : MonoBehaviour
     }
     private void Update()
     {
+        if(GetGameStart == false) return;
+
         Save_Timer += Time.unscaledDeltaTime;
         if(Save_Timer >= 10.0f) // 10초마다 FireBase에 값 저장
         {
@@ -56,15 +60,17 @@ public class Base_Manager : MonoBehaviour
             }
         }
 
-        for(int i = 0; i < Data.Buff_Timers.Length; i++)
+        for(int i = 0; i < Data_Manager.m_Data.Buff_Timers.Length; i++)
         {
-            if(Data.Buff_Timers[i] >= 0.0f)
+            if(Data_Manager.m_Data.Buff_Timers[i] >= 0.0f)
             {
-                Data.Buff_Timers[i] -= Time.unscaledDeltaTime;
+                Data_Manager.m_Data.Buff_Timers[i] -= Time.unscaledDeltaTime;
             }
         }
-        if(Data.Buff_x2 > 0.0f) Data.Buff_x2 -= Time.unscaledDeltaTime;
+
+        if(Data_Manager.m_Data.Buff_x2 > 0.0f) Data_Manager.m_Data.Buff_x2 -= Time.unscaledDeltaTime;
         
+
     }
     private void Initialize()
     {
@@ -75,11 +81,8 @@ public class Base_Manager : MonoBehaviour
             Pool.Initialize(transform);
 
             ADS.Init();
-            Data.Init();
             Item.Init();
             Firebase.Init();
-
-            Character.GetCharacter(0, "Hunter");
 
             DontDestroyOnLoad(this.gameObject);
         }
@@ -118,8 +121,7 @@ public class Base_Manager : MonoBehaviour
 
     private void OnDestroy() // 게임 종료시 데이터 저장용
     {
-        // Firebase와 reference가 모두 null이 아닌지 확인
-        if (Firebase != null && Firebase.reference != null)
+        if(GetGameStart)
         {
             Firebase.WriteData();
         }

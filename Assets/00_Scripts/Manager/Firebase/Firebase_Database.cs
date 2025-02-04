@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Firebase.Database;
 using Firebase.Extensions;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public class User
 {
@@ -10,41 +11,69 @@ public class User
     public int Stage;
 }
 
+
 public partial class Firebase_Manager
 {
+    // Dictionary -> json 파싱 위해서는 Newtonsoft.Json 필요
+    // JsonConvert.SerializeObject = Dictionary -> json 파싱
+
     public void WriteData()
     {
-        User user = new User();
-        user.userName = currentUser.UserId;
-        user.Stage = Base_Manager.Data.Stage;
+        #region DEFAULT_DATA
 
-        string json = JsonUtility.ToJson(user);
+        Data data = new Data();
 
-        reference.Child("USER").Child(currentUser.UserId).SetRawJsonValueAsync(json).ContinueWithOnMainThread(task =>
+        if(Data_Manager.m_Data != null)
         {
-            if(task.IsCompleted)
-            {
-                Debug.Log("데이터 쓰기 성공");
-            }
-            else
+            data = Data_Manager.m_Data;
+        }
+
+        string Default_json = JsonUtility.ToJson(data);
+
+        reference.Child("USER").Child(currentUser.UserId).Child("DATA").SetRawJsonValueAsync(Default_json).ContinueWithOnMainThread(task =>
+        {
+            if(!task.IsCompleted)
             {
                 Debug.LogError("데이터 쓰기 실패 : " + task.Exception.ToString());
             }
+
         });
+        #endregion
+
+        #region CHARACTER_DATA
+
+        string Character_json = JsonConvert.SerializeObject(Base_Manager.Data.Character_Holder);
+        reference.Child("USER").Child(currentUser.UserId).Child("CHARACTER").SetRawJsonValueAsync(Character_json).ContinueWithOnMainThread(task =>
+        {
+            if(!task.IsCompleted)
+            {
+                Debug.LogError("캐릭터 데이터 쓰기 실패 : " + task.Exception.ToString());
+            }
+        });
+
+        #endregion
+
     }
 
     public void ReadData()
     {
-        reference.Child("USER").Child(currentUser.UserId).GetValueAsync().ContinueWithOnMainThread(task =>
+        #region DEFAULT_DATA
+
+        reference.Child("USER").Child(currentUser.UserId).Child("DATA").GetValueAsync().ContinueWithOnMainThread(task =>
         {
             if(task.IsCompleted)
             {
                 DataSnapshot snapshot = task.Result;
 
-                User user = JsonUtility.FromJson<User>(snapshot.GetRawJsonValue());
-                Debug.Log("사용자 이름 : " + user.userName);
-                Debug.Log("스테이지 : " + user.Stage);
+                var default_data = JsonUtility.FromJson<Data>(snapshot.GetRawJsonValue());
 
+                Data data = new Data();
+                if(default_data != null)
+                {
+                    data = default_data;
+                }
+
+                Data_Manager.m_Data = data;
                 LoadingScene.instance.LoadingMain();
             }
             else
@@ -53,6 +82,27 @@ public partial class Firebase_Manager
             }
 
         });
+        #endregion
+
+        #region CHARACTER_DATA
+
+        reference.Child("USER").Child(currentUser.UserId).Child("CHARACTER").GetValueAsync().ContinueWithOnMainThread(task =>
+        {
+            if(task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+
+                var data = JsonConvert.DeserializeObject<Dictionary<string, Holder>>(snapshot.GetRawJsonValue());
+
+                Base_Manager.Data.Character_Holder = data;
+                Base_Manager.Data.Init();
+            }
+            else
+            {
+                Debug.LogError("데이터 읽기 실패 : " + task.Exception.ToString());
+            }
+
+        });
+        #endregion
     }
-   
 }

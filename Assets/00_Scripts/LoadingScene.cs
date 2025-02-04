@@ -31,6 +31,7 @@ public class LoadingScene : MonoBehaviour
         if(asyncOperation.progress >= 0.9f && Input.GetMouseButtonDown(0))
         {
             asyncOperation.allowSceneActivation = true;
+            Base_Manager.GetGameStart = true;
         }
     }
 

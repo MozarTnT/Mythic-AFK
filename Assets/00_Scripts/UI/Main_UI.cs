@@ -108,32 +108,35 @@ public class Main_UI : MonoBehaviour
 
     private void Update()
     {
-        if(Base_Manager.Data.Buff_x2 > 0.0f)
+        if(Data_Manager.m_Data.Buff_x2 > 0.0f)
         {
-            x2Fill.fillAmount = Base_Manager.Data.Buff_x2 / 1800.0f;
-            x2Text.text = Utils.GetTimer(Base_Manager.Data.Buff_x2);
+            x2Fill.fillAmount = Data_Manager.m_Data.Buff_x2 / 1800.0f;
+            x2Text.text = Utils.GetTimer(Data_Manager.m_Data.Buff_x2);
         }
     }
+
 
    
 
     public void BuffCheck()
     {
-        for(int i = 0; i < Base_Manager.Data.Buff_Timers.Length; i++)
+        for(int i = 0; i < Data_Manager.m_Data.Buff_Timers.Length; i++)
         {
-            if(Base_Manager.Data.Buff_Timers[i] > 0.0f)
+            if(Data_Manager.m_Data.Buff_Timers[i] > 0.0f)
             {
                 Buffs_Lock[i].SetActive(false);
+
             }
             else
             {
                 Buffs_Lock[i].SetActive(true);
             }
         }
-        if(Base_Manager.Data.Buff_x2 > 0.0f)
+        if(Data_Manager.m_Data.Buff_x2 > 0.0f)
         {
             x2Fill.transform.parent.gameObject.SetActive(true);
         }
+
         else
         {
             x2Fill.transform.parent.gameObject.SetActive(false);
@@ -150,14 +153,16 @@ public class Main_UI : MonoBehaviour
         bool fast = !Base_Manager.isFast;
         if(fast == true)
         {
-            if(Base_Manager.Data.Buff_x2 <= 0.0f)
+            if(Data_Manager.m_Data.Buff_x2 <= 0.0f)
             {
                 Base_Manager.ADS.ShowRewardedAds(() => 
+
                 {
-                    Base_Manager.Data.Buff_x2 = 1800.0f;
+                    Data_Manager.m_Data.Buff_x2 = 1800.0f;
                     BuffCheck();
                     TimeCheck();
                 });
+
             }
 
         }
@@ -518,8 +523,9 @@ public class Main_UI : MonoBehaviour
 
     public void TextCheck()
     {
-        m_Level_Text.text = "Lv." + (Base_Manager.Data.Level + 1).ToString();
+        m_Level_Text.text = "Lv." + (Data_Manager.m_Data.Level + 1).ToString();
         m_ALLATK_Text.text = StringMethod.ToCurrencyString(Base_Manager.Player.Average_ATK());
+
 
         double LevelUpMoneyValue = Utils.Data.levelData.MONEY();
 
@@ -527,14 +533,16 @@ public class Main_UI : MonoBehaviour
         
         m_LevelUp_Money_Text.color = Utils.Coin_Check(LevelUpMoneyValue) ? Color.green : Color.red;
 
-        m_Money_Text.text = StringMethod.ToCurrencyString(Base_Manager.Data.Money);
+        m_Money_Text.text = StringMethod.ToCurrencyString(Data_Manager.m_Data.Money);
+
 
         m_Stage_Text.text = Stage_Manager.isDead ? "반복중..." : "진행중...";
         m_Stage_Text.color = Stage_Manager.isDead ? Color.yellow : m_Stage_Color;
 
-        int stageValue = Base_Manager.Data.Stage + 1;
+        int stageValue = Data_Manager.m_Data.Stage + 1;
         int stageForward = (stageValue / 10) + 1;
         int stageBack = stageValue % 10;
+
 
         // 스테이지 / 10 + 1
         

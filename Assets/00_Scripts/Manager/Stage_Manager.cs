@@ -32,12 +32,13 @@ public class Stage_Manager
         switch(state)
         {
             case Stage_State.Ready: 
-                MaxCount = int.Parse(CSV_Importer.Spawn_Design[Base_Manager.Data.Stage]["MaxCount"].ToString());
+                MaxCount = int.Parse(CSV_Importer.Spawn_Design[Data_Manager.m_Data.Stage]["MaxCount"].ToString());
                 Debug.Log("isReady");
                 Debug.Log("MaxCount : " + MaxCount);
                 m_ReadyEvent?.Invoke();
                 Base_Manager.instance.Coroutine_Action(2.0f, () => State_Change(Stage_State.Play));
                 break;
+
             case Stage_State.Play:
                 Debug.Log("isPlay");
                 m_PlayEvent?.Invoke();
@@ -52,7 +53,7 @@ public class Stage_Manager
                 m_BossPlayEvent?.Invoke();
                 break;
             case Stage_State.Clear:
-                Base_Manager.Data.Stage++;
+                Data_Manager.m_Data.Stage++;
                 Debug.Log("isClear");
                 m_ClearEvent?.Invoke();
                 break;
