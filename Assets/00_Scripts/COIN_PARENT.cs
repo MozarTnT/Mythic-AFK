@@ -24,7 +24,7 @@ public class COIN_PARENT : MonoBehaviour
 
     private void OnSave()
     {
-        Base_Manager.Data.Money += Utils.Data.stageData.MONEY();
+        Data_Manager.m_Data.Money += Utils.Data.stageData.MONEY();
         if(Distance_Boolean_World(0.5f))
         {
             Base_Manager.Pool.m_pool_Dictionary["COIN_PARENT"].Return(this.gameObject); // 풀에 오브젝트 반환
@@ -55,7 +55,8 @@ public class COIN_PARENT : MonoBehaviour
         // 부모를 특정 레이어로 설정
         transform.parent = Base_Canvas.instance.HOLDER_LAYER(0);
 
-        Base_Manager.Data.Money += Utils.Data.stageData.MONEY();
+        Data_Manager.m_Data.Money += Utils.Data.stageData.MONEY();
+
 
         // 코인 효과 코루틴 시작
         StartCoroutine(Coin_Effect());

@@ -56,7 +56,7 @@ public class Utils
 
     public static bool Coin_Check(double value)
     {
-        if(Base_Manager.Data.Money >= value)
+        if(Data_Manager.m_Data.Money >= value)
         {
             return true;
         }

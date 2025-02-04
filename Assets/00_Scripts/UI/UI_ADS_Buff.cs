@@ -18,12 +18,13 @@ public class UI_ADS_Buff : UI_Base
 
     public override bool Init()
     {
-        for(int i = 0; i < Base_Manager.Data.Buff_Timers.Length; i++)
+        for(int i = 0; i < Data_Manager.m_Data.Buff_Timers.Length; i++)
         {
             int index = i;
             m_Buttons[index].onClick.AddListener(() => GetBuff((ADS_Buff_State)index));
-            if(Base_Manager.Data.Buff_Timers[i] > 0.0f)
+            if(Data_Manager.m_Data.Buff_Timers[i] > 0.0f)
             {
+
                 SetBuff(i, true);
             }
         }
@@ -33,13 +34,14 @@ public class UI_ADS_Buff : UI_Base
 
     private void Update()
     {
-        for(int i = 0; i < Base_Manager.Data.Buff_Timers.Length; i++)
+        for(int i = 0; i < Data_Manager.m_Data.Buff_Timers.Length; i++)
         {
-            if(Base_Manager.Data.Buff_Timers[i] >= 0.0f)
+            if(Data_Manager.m_Data.Buff_Timers[i] >= 0.0f)
             {
-                m_Buttons_Fill[i].fillAmount = 1 - (Base_Manager.Data.Buff_Timers[i] / 1800.0f);
-               
-                m_Timer_Texts[i].text = Utils.GetTimer(Base_Manager.Data.Buff_Timers[i]);
+
+                m_Buttons_Fill[i].fillAmount = 1 - (Data_Manager.m_Data.Buff_Timers[i] / 1800.0f);
+                m_Timer_Texts[i].text = Utils.GetTimer(Data_Manager.m_Data.Buff_Timers[i]);
+
             }
         }
     }
@@ -51,9 +53,9 @@ public class UI_ADS_Buff : UI_Base
         {
             int stateValue = (int)m_State;
 
-            Base_Manager.Data.BuffCount++;
+            Data_Manager.m_Data.BuffCount++;
 
-            Base_Manager.Data.Buff_Timers[stateValue] = 1800.0f;
+            Data_Manager.m_Data.Buff_Timers[stateValue] = 1800.0f;
             Main_UI.instance.BuffCheck();
 
             SetBuff(stateValue, true);

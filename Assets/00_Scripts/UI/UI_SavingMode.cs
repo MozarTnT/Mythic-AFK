@@ -48,7 +48,7 @@ public class UI_SavingMode : UI_Base
         // 시간
         TimerText.text = System.DateTime.Now.ToString("tt hh:mm");
 
-        int stageValue = Base_Manager.Data.Stage + 1;
+        int stageValue = Data_Manager.m_Data.Stage + 1;
         int stageForward = (stageValue / 10) + 1;
         int stageBack = stageValue % 10;
 

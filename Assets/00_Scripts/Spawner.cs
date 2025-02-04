@@ -19,7 +19,7 @@ public class Spawner : MonoBehaviour
 
     private void Awake()
     {
-        Stage_Manager.m_ReadyEvent += OnReady;
+        Stage_Manager.m_ReadyEvent += OnReady; // 생성주기 선후 문제로 Awake 문으로 이동동
        
     }
 
@@ -31,8 +31,8 @@ public class Spawner : MonoBehaviour
 
     public void OnReady()
     {
-        m_Count = int.Parse(CSV_Importer.Spawn_Design[Base_Manager.Data.Stage]["Spawn_Count"].ToString());
-        m_SpawnTime = float.Parse(CSV_Importer.Spawn_Design[Base_Manager.Data.Stage]["Spawn_Timer"].ToString());
+        m_Count = int.Parse(CSV_Importer.Spawn_Design[Data_Manager.m_Data.Stage]["Spawn_Count"].ToString());
+        m_SpawnTime = float.Parse(CSV_Importer.Spawn_Design[Data_Manager.m_Data.Stage]["Spawn_Timer"].ToString());
     }
 
     public void OnPlay()

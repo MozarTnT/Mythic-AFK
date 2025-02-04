@@ -12,14 +12,16 @@ public class Player_Manager
 
     public void EXP_UP()
     {
-        Base_Manager.Data.EXP += Utils.Data.levelData.EXP();
+        Data_Manager.m_Data.EXP += Utils.Data.levelData.EXP();
         ATK += Utils.Data.levelData.ATK();
         HP += Utils.Data.levelData.HP();
-        if(Base_Manager.Data.EXP >= Utils.Data.levelData.MAXEXP())
+        if(Data_Manager.m_Data.EXP >= Utils.Data.levelData.MAXEXP())
         {
-            Base_Manager.Data.Level++;
-            Base_Manager.Data.EXP = 0;
+
+            Data_Manager.m_Data.Level++;
+            Data_Manager.m_Data.EXP = 0;
             Main_UI.instance.TextCheck();
+
         }
 
         for(int i = 0; i < Spawner.m_Players.Count; i++)
@@ -31,7 +33,8 @@ public class Player_Manager
     public float EXP_Percentage()
     {
         float exp = (float)Utils.Data.levelData.MAXEXP();
-        double myEXP = Base_Manager.Data.EXP;
+        double myEXP = Data_Manager.m_Data.EXP;
+
 
         return (float)myEXP / exp;
     }
