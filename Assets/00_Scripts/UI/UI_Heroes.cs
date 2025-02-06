@@ -118,6 +118,7 @@ public class UI_Heroes : UI_Base
     {
         Main_UI.instance.FadeInOut(false, true, () =>
         {
+            Main_UI.instance.LayerCheck(-1);
             Main_UI.instance.FadeInOut(true, false, null);
             base.DisableOBJ();
         });

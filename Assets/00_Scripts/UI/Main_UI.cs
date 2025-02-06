@@ -72,7 +72,13 @@ public class Main_UI : MonoBehaviour
     [SerializeField] private GameObject[] Buffs_Lock;
     [SerializeField] private Image x2Fill;
     [SerializeField] private TextMeshProUGUI x2Text;
+
+
+    [Header("## LayerButtons")]
+    [SerializeField] private Transform[] Layer_Images;
+
     #endregion
+
 
     private void Awake()
     {
@@ -115,10 +121,51 @@ public class Main_UI : MonoBehaviour
         }
     }
 
+    public void LayerCheck(int value)
+    {
+        if(value != -1)
+            StartCoroutine(ImageMoveCoroutine(value));
+
+        for(int i = 0; i < Layer_Images.Length; i++)
+        {
+            if(value != i  && Layer_Images[i].localScale.x >= 1.3f)
+            {
+                StartCoroutine(ImageMoveCoroutine(i, true));
+            }
+        }
+    }
+
+    IEnumerator ImageMoveCoroutine(int value, bool ScaleDown = false)
+    {
+        float current = 0f;
+        float percent = 0f;
+        float start = ScaleDown ? 50.0f : 25.0f; // y 포지션
+        float end = ScaleDown ? 25.0f : 50.0f; // y 포지션
+        float startScale = ScaleDown ? 1.5f : 1.0f; 
+        float endScale = ScaleDown ? 1.0f : 1.5f;
+
+        while(percent < 1.0f)
+        {
+            current += Time.unscaledDeltaTime;
+            percent = current / 0.2f;
+
+            float yPos = Mathf.Lerp(start, end, percent);
+            float scalePos = Mathf.Lerp(startScale, endScale, percent);
+
+            Layer_Images[value].localPosition = new Vector2(0.0f, yPos);
+            Layer_Images[value].localScale = new Vector3(scalePos, scalePos, 1.0f);
+
+            yield return null;
+        }
+        
+
+    }
+
 
    
 
     public void BuffCheck()
+
     {
         for(int i = 0; i < Data_Manager.m_Data.Buff_Timers.Length; i++)
         {

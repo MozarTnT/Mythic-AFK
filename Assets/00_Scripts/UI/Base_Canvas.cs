@@ -23,15 +23,21 @@ public class Base_Canvas : MonoBehaviour
 
     private void Start()
     {
-        HERO_BUTTON.onClick.AddListener(() => GetUI("#Heros", true));
+        HERO_BUTTON.onClick.AddListener(() => GetUI("#Heros", true, false));
+        HERO_BUTTON.onClick.AddListener(() => Main_UI.instance.LayerCheck(1));
+
+        SHOP_BUTTON.onClick.AddListener(() => GetUI("#Shop", true, false));
+        SHOP_BUTTON.onClick.AddListener(() => Main_UI.instance.LayerCheck(5));
+
         INVENTORY_BUTTON.onClick.AddListener(() => GetUI("#Inventory"));
         SAVINGMODE_BUTTON.onClick.AddListener(() => {GetUI("#SavingMode"); isSave = true;});
+
         ADSBUFF_BUTTON.onClick.AddListener(() => GetUI("#ADS_Buff"));
     }
    
     public Transform COIN; // 코인 오브젝트
     [SerializeField] private Transform LAYER; // 레이어 설정
-    [SerializeField] private Button HERO_BUTTON, INVENTORY_BUTTON, SAVINGMODE_BUTTON, ADSBUFF_BUTTON;
+    [SerializeField] private Button HERO_BUTTON, INVENTORY_BUTTON, SAVINGMODE_BUTTON, ADSBUFF_BUTTON, SHOP_BUTTON;
     [HideInInspector] public PopUp_UI popup = null;
     [HideInInspector] public UI_Base m_UI;
     public static bool isSave = false;
@@ -57,8 +63,13 @@ public class Base_Canvas : MonoBehaviour
         return LAYER.GetChild(value);
     }
 
-    public void GetUI(string temp, bool Fade = false)
+
+    public void GetUI(string temp, bool Fade = false, bool Close = false)
     {
+        if(Close)
+        {
+            Utils.CloseAllPopupUI();
+        }
         if(Fade)
         {
             Main_UI.instance.FadeInOut(false, true,() => GetPopupUI(temp));
