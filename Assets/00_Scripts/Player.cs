@@ -20,6 +20,11 @@ public class Player : Character
 
         Data_Set(Resources.Load<Character_Scriptable>("Scriptable/Character/" + CH_Name));
 
+        if(Data_Manager.m_Data != null)
+        {
+            Set_ATKHP();  // 데이터가 있으면 HP 재계산
+        }
+
         Spawner.m_Players.Add(this);
 
         Stage_Manager.m_ReadyEvent += OnReady;

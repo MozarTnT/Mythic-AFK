@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    public static Spawner instance = null;
+
     // 스폰 기능 : 몬스터를 특정 위치에 특정 시간마다 랜덤으로 생성
 
     private int m_Count; // 생성 개수
@@ -19,8 +21,12 @@ public class Spawner : MonoBehaviour
 
     private void Awake()
     {
+        if(instance == null)
+        {
+            instance = this;
+        }
+
         Stage_Manager.m_ReadyEvent += OnReady; // 생성주기 선후 문제로 Awake 문으로 이동동
-       
     }
 
     private void Start()
@@ -47,20 +53,27 @@ public class Spawner : MonoBehaviour
         if(coroutine != null)
         {
             StopCoroutine(coroutine);
+            coroutine = null;
         }
+
         for(int i = 0; i < m_Monsters.Count; i++)
         {
             Base_Manager.Pool.m_pool_Dictionary["Monster"].Return(m_Monsters[i].gameObject);
         }
         m_Monsters.Clear();
 
-        StartCoroutine(BossSetCoroutine());
+        if(Stage_Manager.m_State == Stage_State.Boss)
+        {
+            StartCoroutine(BossSetCoroutine());
+        }
+
     }
 
 
     IEnumerator BossSetCoroutine()
     {
         yield return new WaitForSeconds(2.0f);
+
         var monster = Instantiate(Resources.Load<GameObject>("Pool_OBJ/Boss"), Vector3.zero, Quaternion.Euler(0, 180, 0));
         monster.GetComponent<Monster>().Init();
 
@@ -103,6 +116,7 @@ public class Spawner : MonoBehaviour
 
             var goObj = Base_Manager.Pool.Pooling_OBJ("Monster").Get((value) =>
             {
+                value.GetComponent<Monster>().ResetMonster();
                 value.GetComponent<Monster>().Init();
                 value.transform.position = pos;
                 value.transform.LookAt(Vector3.zero);
@@ -114,6 +128,20 @@ public class Spawner : MonoBehaviour
 
         coroutine = StartCoroutine(SpawnCoroutine());
     }
+
+    private void OnStateChanged(Stage_State newState)
+    {
+        // 보스 상태가 아닐 때만 일반 몬스터 스폰 허용
+        if(newState == Stage_State.Play)
+        {
+            if(coroutine == null)
+            {
+                coroutine = StartCoroutine(SpawnCoroutine());
+            }
+        }
+
+    }
+
 
 
 }

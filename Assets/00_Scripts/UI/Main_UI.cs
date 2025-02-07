@@ -307,8 +307,15 @@ public class Main_UI : MonoBehaviour
     public void Set_Boss_State()
     {
         Stage_Manager.isDead = false;
+        
+        if(Spawner.instance != null)
+        {
+            Spawner.instance.OnBoss();
+        }
+
         Stage_Manager.State_Change(Stage_State.Boss);
     }
+
 
 
     private void SliderOBJCheck(bool Boss)

@@ -74,6 +74,15 @@ public partial class Firebase_Manager
                 }
 
                 Data_Manager.m_Data = data;
+
+                foreach(var player in Spawner.m_Players)
+                {
+                    if(player != null)
+                    {
+                        player.Set_ATKHP();
+                    }
+                }
+
                 LoadingScene.instance.LoadingMain();
             }
             else

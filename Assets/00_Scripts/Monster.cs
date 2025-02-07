@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class Monster : Character
 {
+    public Vector3 originalScale;
     public float m_Speed;
     bool isSpawn = false;
     double MaxHP;
@@ -12,12 +13,18 @@ public class Monster : Character
     public float R_Attack_Range;
     public bool isBoss = false;
 
+    private void Awake()
+    {
+        originalScale = transform.localScale;
+    }
+
     protected override void Start()
+
     {
         base.Start();
-
         Stage_Manager.m_DeadEvent += OnDead;
     }
+
 
     public void Init()
     {
@@ -37,6 +44,13 @@ public class Monster : Character
         }
 
         StartCoroutine(Spawn_Start());
+    }
+
+    public void ResetMonster()
+    {
+        transform.localScale = originalScale;  // 원래 스케일로 복구
+        HP = MaxHP;  // HP 리셋
+        isDead = false;
     }
 
     IEnumerator SkillCoroutine()
